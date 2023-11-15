@@ -186,3 +186,116 @@ class Solution {
         return new String(result);
     }
 }
+
+
+//------------------------------------------------------------------------------------
+//𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 7
+https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/description/
+
+//Time Complexity O(n*k)  here k = 1000   [0 <= nums[i] <= 1000]
+// class Solution {
+//     public int specialArray(int[] nums) {
+//         int n = nums.length;
+
+//         for(int i=1; i<=1000; i++){
+//             int count = 0;
+//             for(int j=0; j<n; j++){
+//                 if(nums[j] >= i){
+//                     count++;
+//                 }
+//             }
+//             if(count == i){
+//                 return count;
+//             }
+//         }
+//         return -1;
+//     }
+// }
+
+//Time Complexity 0(nlogk) here k = 1000
+class Solution {
+    public int specialArray(int[] nums) {
+        int n = nums.length;
+
+        int left = 0, right = 1000;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int count = 0;
+
+            for (int num : nums) {
+                if (num >= mid) {
+                    count++;
+                }
+            }
+
+            if (count == mid) {
+                return mid;
+            } else if (count < mid) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return -1;
+    }
+}
+
+
+
+//------------------------------------------------------------------------------------
+//𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 8
+https://leetcode.com/problems/kth-missing-positive-number/description/
+
+class Solution {
+    public int findKthPositive(int[] arr, int k) {
+        int missingCount = 0;
+        int current = 1;
+        int index = 0;
+
+        while (missingCount < k) {
+            if (index < arr.length && arr[index] == current) {
+                index++;
+            } else {
+                missingCount++;
+                if (missingCount == k) {
+                    return current;
+                }
+            }
+            current++;
+        }
+
+        return -1;
+    }
+}
+
+
+//------------------------------------------------------------------------------------
+//𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 9
+https://leetcode.com/problems/count-of-smaller-numbers-after-self/description/
+
+//Time Complexity O(n^2) Time Limit Exceeded. Will do it again with the more optimized solutiongi
+class Solution {
+    public List<Integer> countSmaller(int[] nums) {
+        int n = nums.length;
+        List<Integer> result = new ArrayList<>();
+        for(int i=0; i<n; i++){
+            result.add(check(nums, i));
+            
+        }
+        return result;
+    }
+
+    int check(int[] nums, int index){
+        int count = 0;
+        for(int i = index+1; i<nums.length; i++){
+            if(nums[index]>nums[i]){
+                count++;
+            }
+        }
+        return count;
+    }
+}
+
+
