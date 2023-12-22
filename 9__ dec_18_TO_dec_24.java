@@ -416,7 +416,7 @@ class Solution {
 }
 
 //_____________________________________________________________________________________________________________________________________________________
-//Q: https://leetcode.com/problems/valid-sudoku/submissions/1125923913/
+//Q: https://leetcode.com/problems/valid-sudoku/description/
 
 // Runtime 1ms
 // Beats 100.00% of users with Java
@@ -442,6 +442,82 @@ class Solution {
     }
 
     public boolean isValid(char[][] board, int row, int col, int num){
+        //check vertical
+        for(int i=0; i<9; i++){
+            if(board[i][col] == num){
+                return false;
+            }
+        }
+
+        //check horizontal
+        for(int j=0; j<9; j++){
+            if(board[row][j] == num){
+                if(board[row][j] == num){
+                    return false;
+                }
+            }
+        }
+
+        //check 3x3 subgrid
+        int sRow = row/3*3;
+        int sCol = col/3*3;
+        for(int i=sRow; i<sRow+3; i++){
+            for(int j=sCol; j<sCol+3; j++){
+                if(board[i][j] == num){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
+
+//___________________________________________________________________________________________________________________________________________________
+//Q: https://leetcode.com/problems/sudoku-solver/description/
+
+// Runtime 6ms
+// Beats 76.84% of users with Java
+
+class Solution {
+    static int check = 0;
+    public void solveSudoku(char[][] board) {
+        solve(board,0,0);
+        check = 0;
+    }
+
+    public void solve(char[][] board,int row,int col){
+        if(row == 9){// Base case: If we have reached the end of the board (row 9)
+            check = 1;// set check to 1 and return
+            return;
+        }
+        if(board[row][col] != '.'){
+            if(col != 8){
+                solve(board, row, col+1);
+            }else{
+                solve(board, row+1, 0);
+            }
+        }else{
+            // Try placing numbers from '1' to '9' in the empty cell
+            for(char ch='1'; ch<='9'; ch++){
+                if(isValid(board,row,col,ch)){
+                    board[row][col] = ch;
+                    if(col != 8){
+                        solve(board, row, col+1);
+                    }else{
+                        solve(board, row+1, 0);
+                    }
+                    if(check == 1){
+                        return;
+                    }
+                    // If placing 'ch' didn't lead to a solution, backtrack by resetting the cell to '.'
+                    board[row][col] = '.'; //backtracking
+                }
+            }
+        }
+    }
+
+     public boolean isValid(char[][] board, int row, int col, int num){
         //check vertical
         for(int i=0; i<9; i++){
             if(board[i][col] == num){
