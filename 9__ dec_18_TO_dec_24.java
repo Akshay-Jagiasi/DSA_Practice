@@ -414,3 +414,61 @@ class Solution {
         return false;
     }
 }
+
+//_____________________________________________________________________________________________________________________________________________________
+//Q: https://leetcode.com/problems/valid-sudoku/submissions/1125923913/
+
+// Runtime 1ms
+// Beats 100.00% of users with Java
+
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        for(int i=0; i<9; i++){   // Iterate through each cell in the board
+            for(int j=0; j<9;j++){
+                
+                if(board[i][j] == '.'){   //If cell is empty move to next cell
+                    continue;
+                }
+                char num = board[i][j];// Save the current value in the cell 
+                board[i][j] = '.';   //temporarily empty it for validation
+                if(isValid(board,i,j,num) == false){  // // Check if placing 'num' in the current cell is valid
+                    return false;
+                }
+                board[i][j] = num; //Backtracking: restore the original value in the cell
+            }            
+        }
+        // If all cells are valid, the Sudoku board is valid
+        return true;
+    }
+
+    public boolean isValid(char[][] board, int row, int col, int num){
+        //check vertical
+        for(int i=0; i<9; i++){
+            if(board[i][col] == num){
+                return false;
+            }
+        }
+
+        //check horizontal
+        for(int j=0; j<9; j++){
+            if(board[row][j] == num){
+                if(board[row][j] == num){
+                    return false;
+                }
+            }
+        }
+
+        //check 3x3 subgrid
+        int sRow = row/3*3;
+        int sCol = col/3*3;
+        for(int i=sRow; i<sRow+3; i++){
+            for(int j=sCol; j<sCol+3; j++){
+                if(board[i][j] == num){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}
