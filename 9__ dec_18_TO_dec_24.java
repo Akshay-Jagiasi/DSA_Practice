@@ -431,10 +431,10 @@ class Solution {
                 }
                 char num = board[i][j];// Save the current value in the cell 
                 board[i][j] = '.';   //temporarily empty it for validation
-                if(isValid(board,i,j,num) == false){  // // Check if placing 'num' in the current cell is valid
+                if(isValid(board,i,j,num) == false){  // Check if placing 'num' in the current cell is valid
                     return false;
                 }
-                board[i][j] = num; //Backtracking: restore the original value in the cell
+                board[i][j] = num; //restore the original value in the cell
             }            
         }
         // If all cells are valid, the Sudoku board is valid
