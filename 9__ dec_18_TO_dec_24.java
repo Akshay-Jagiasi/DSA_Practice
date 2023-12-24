@@ -978,3 +978,76 @@ public class CLL {
         }
     }
 }
+
+//________________________________________________________________________________________________________________________________________
+//Q: https://leetcode.com/problems/merge-two-sorted-lists/description/
+
+// Runtime 0ms
+// Beats 100.00% of users with Java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
+        
+        while (list1 != null && list2 != null) { //continue until either of the list becomes empty
+            if (list1.val <= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
+            }
+            current = current.next;
+        }
+
+        
+        if (list1 != null) {
+            current.next = list1;
+        }
+        if (list2 != null) {
+            current.next = list2;
+        }
+        return dummy.next;
+    }
+}
+
+
+//____________________________________________________________________________________________________________________________________________
+//Q: https://leetcode.com/problems/remove-duplicates-from-sorted-list/description/
+
+// Runtime 0ms
+// Beats 100.00% of users with Java
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode temp = head;
+        while (temp != null && temp.next != null) {
+            if(temp.val == temp.next.val){
+                temp.next = temp.next.next;
+            }else{
+                temp = temp.next;
+            }
+        }
+        return head;
+    }
+}
