@@ -548,3 +548,433 @@ class Solution {
         return true;
     }
 }
+
+
+//__________________________________________________________________________________________________________________________________________________
+//Q: Design a singly linked list class (LL) to perform the following operations:
+
+// Insert Operations:
+// insertFirst(int value): Inserts a new node with the given value at the beginning of the linked list.
+// insertLast(int value): Inserts a new node with the given value at the end of the linked list.
+// insertAtPosition(int value, int index): Inserts a new node with the given value at the specified index in the linked list.
+
+// Delete Operations:
+// deleteFirst(): Removes the first node from the linked list.
+// deleteLast(): Removes the last node from the linked list.
+// deleteAtIndex(int index): Removes the node at the specified index from the linked list.
+
+// Search Operation:
+// find(int value): Searches for the first occurrence of the given value in the linked list. If found, return the index; otherwise, return -1.
+
+// Display and Size:
+// display(): Prints the elements of the linked list.
+// size(): Returns the size of the linked list.
+
+package LinkedList;
+
+public class LL{
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public void insertFirst(int value){
+        Node node = new Node(value);
+        node.next = head;
+        if(tail == null){
+            tail = node;
+        }
+        head = node;
+        size++;
+    }
+
+    public void insertLast(int value){
+        Node node = new Node(value);
+        if(tail == null){
+            insertFirst(value);
+            return;
+        }
+        tail.next = node;
+        tail = node;
+        size++;
+    }
+
+    public void insertAtPosition(int value, int index){
+        if(index == 0){
+            insertFirst(value);
+            return;
+        }
+        Node temp = head;
+        for(int i=1; i < index; i++){
+            temp = temp.next;
+        }
+        Node node = new Node(value, temp.next);
+        temp.next = node;
+        size++;
+    }
+    
+    public void deleteFirst(){
+        if(head == null){
+            System.out.println("Nothing to delete");
+            return;
+        }
+        int value = head.value;
+        head = head.next;
+        size--;
+        System.out.println("First value is removed and the value is: "+value);
+    }
+
+    public void deleteLast(){
+        if(head == null){
+            System.out.println("Nothing to delete");
+            return;
+        }
+        if(size <= 1){
+            deleteFirst();
+        }
+        Node secondLast = get(size-2);
+        int val = tail.value;
+        tail = secondLast;
+        tail.next = null;
+        size--;
+        System.out.println("Last value is removed and the value is: "+val);
+    }
+
+    public void deleteAtIndex(int index){
+        if(index == 0){
+            deleteFirst();
+        }
+        if(index == size-1){
+            deleteLast();
+        }
+
+        Node prev = get(index-1);
+        int val = prev.next.value;
+        prev.next = prev.next.next;
+        size--;
+        System.out.println("Value at index "+index+" is removed and the value is: "+val);
+    }
+
+    public void find(int value) {
+        Node node = head;
+        int index = 0;
+    
+        while (node != null) {
+            if (node.value == value) {
+                System.out.println("Value " + value + " found at index " + index);
+                return;
+            }
+            node = node.next;
+            index++;
+        }
+        System.out.println("Value " + value + " not found in the list");
+    }
+    
+
+    public Node get(int index){
+        Node node = head;
+        for(int i=0; i<index; i++){
+            node = node. next;
+        }
+        return node;
+    }
+
+    public void display(){
+        Node temp = head;
+        while(temp != null){
+            System.out.print(temp.value + "->");
+            temp = temp.next;
+        }
+        System.out.print("end");
+        System.out.println();
+    }
+
+    public void size(){
+        System.out.println("size of the LinkedList is: " + size);
+    }
+
+    class Node{
+        private int value;
+        private Node next;
+
+        public Node (int value){
+            this.value = value;
+        }
+
+        public Node (int value, Node next){
+            this.value = value;
+            this.next = next;
+        }
+
+    }   
+}
+
+
+//_____________________________________________________________________________________________________________________________________________________________________
+//Q: Problem Description: Design a Java class DLL to perform operations on a doubly linked list. The class should support the following operations:
+
+// Insert Operations:
+// insertFirst(int value): Inserts a new node with the given value at the beginning of the doubly linked list.
+// insertLast(int value): Inserts a new node with the given value at the end of the doubly linked list.
+// insertAtIndex(int value, int index): Inserts a new node with the given value at the specified index in the doubly linked list.
+
+// Search Operation:
+// find(int value): Searches for the first occurrence of the given value in the doubly linked list. If found, return the index; otherwise, return -1.
+
+// Insert After Value Operation:
+// insertAfterValue(int afterValue, int actualValue): Inserts a new node with the specified value (actualValue) immediately after the first occurrence of a node with the given value (afterValue). If the value is not found, no insertion is performed.
+
+// Delete Operations:
+// deleteFirst(): Removes the first node from the doubly linked list.
+// deleteLast(): Removes the last node from the doubly linked list.
+// deleteAtIndex(int index): Removes the node at the specified index from the doubly linked list.
+
+// Display Operations:
+// display(): Prints the elements of the doubly linked list from the beginning to the end.
+// displayReverse(): Prints the elements of the doubly linked list in reverse order.
+
+// Size Operation:
+// size(): Returns the size of the doubly linked list.
+// The class should handle edge cases, such as deleting from an empty list or attempting to insert after a value that is not present in the list.
+
+package LinkedList;
+
+public class DLL {
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public void insertFirst(int value){
+        Node node = new Node(value);
+        node.next = head;
+        node.prev = null;
+        if(head != null){
+            head.prev = node;
+        }
+        if(tail == null){
+            tail = node;
+        }
+        head = node;
+        size++;
+    }
+
+    public void insertLast(int value){
+        Node node = new Node(value);
+        if(tail == null){
+            insertFirst(value);
+            return;
+        }
+        tail.next = node;
+        node.next = null;
+        node.prev = tail;
+        tail = node;
+        size++;
+    }
+
+    public void insertAtIndex(int value, int index){
+        if(index == 0){
+            insertFirst(value);
+            return;
+        }
+        Node temp = head;
+        for(int i=1; i<index; i++){
+            temp = temp.next;
+        }
+        Node node = new Node(value);
+        node.next = temp.next;
+        node.prev = temp;
+        if(temp.next != null){
+            temp.next.prev = node;
+        }
+        temp.next = node;
+        size++;
+    }
+
+    //Inserts a new node with the specified value (actualValue) immediately after the first occurrence of a node with the given value (afterValue).
+    //If the value is not found, no insertion is performed.
+    //afterValue: The value after which the new node should be inserted.
+    //actualValue: The value to be inserted after the node with afterValue.
+    public void insertAfterValue(int afterValue, int actualValue) {
+        // Check if the list is empty
+        if (head == null) {
+            System.out.println("Error: Cannot insert after value in an empty list.");
+            return;
+        }
+        // Find the index of the node with the specified value
+        int index = find(afterValue);
+        if (index != -1) {
+            // Call insertAtIndex to insert the actualValue after the found node
+            // Increment the index by 1 to insert after the node, not before
+            insertAtIndex(actualValue, index + 1);
+        }
+    }
+    
+    public int find(int value) {
+        Node node = head;
+        int index = 0;
+    
+        while (node != null) {
+            if (node.value == value) {
+                return index;
+            }
+            node = node.next;
+            index++;
+        }
+        return -1;
+    }
+
+    public void deleteFirst(){
+        if(head == null){
+            System.out.println("Nothing to delete");
+            return;
+        }
+        int value = head.value;
+        if(head == tail){
+            head = tail = null;
+        }else{
+            head = head.next;
+            head.prev = null;
+        }
+        size--;
+        System.out.println("Deleted value: "+value);
+    }
+
+    public void deleteLast(){
+       if(head == null){
+            System.out.println("Nothing to delete");
+            return;
+        }
+        int value = tail.value;
+        if(head == tail){
+            head = tail = null;
+        }else{
+            tail = tail.prev;
+            tail.next = null; 
+        }
+        size--;
+        System.out.println("Deleted value: "+value);
+    }
+
+    public void deleteAtIndex(int index){
+        if(index == 0){
+            deleteFirst();
+            return;
+        }
+        if(index == size-1){
+            deleteLast();
+            return;
+        }
+        Node temp = head;
+        for(int i=0; i<index-1; i++){
+            temp = temp.next;
+        }
+        temp.next = temp.next.next;
+        temp.next.prev = temp;
+    }
+
+    public void display(){
+        Node temp = head;
+
+        while(temp != null){
+            System.out.print(temp.value + "->");
+            temp = temp.next;
+        }
+        System.out.print("end ");
+    }
+
+    public void displayReverse(){
+        Node temp2 = tail;
+        while(temp2 != null){
+            System.out.print(temp2.value + "->");
+            temp2 = temp2.prev;
+        }
+        System.out.print("start");
+        System.out.println();
+    }
+    public void size(){
+        System.out.println("The size of the list is "+size);
+    }
+
+    public class Node{
+        private int value;
+        private Node next;
+        private Node prev;
+
+        public Node(int value){
+            this.value = value;
+        }
+    }
+}
+
+
+//____________________________________________________________________________________________________________________________________________________________________
+//Q: Problem Description:Design a Java class CLL to perform operations on a circular linked list. The class should support the following operations:
+
+// Insert Operation:
+// insert(int value): Inserts a new node with the given value into the circular linked list. If the list is empty, the new node becomes both the head and the tail.
+
+// Delete Operation:
+// delete(int value): Deletes the first occurrence of a node with the given value from the circular linked list. If the value is found, remove the node; otherwise, no action is taken.
+
+// Display Operation
+// display(): Prints the elements of the circular linked list.
+// The class should handle edge cases, such as deleting from an empty list.
+
+
+
+package LinkedList;
+
+public class CLL {
+    private Node head;
+    private Node tail;
+
+    public void insert(int value){
+        Node node = new Node(value);
+        if(head == null){
+            head = node;
+            tail = node;
+            return; 
+        }
+        node.next = head;
+        tail.next = node;
+        tail = node;
+    }
+
+    public void delete(int value){
+        if(head.value == value){
+            tail.next = head.next;
+            head = head.next; // Update head
+            return;
+        }
+    
+        Node temp = head;
+        while(temp.next != head){
+            if(temp.next.value == value){
+                temp.next = temp.next.next;
+                return;
+            }
+            temp = temp.next;
+        }
+    }
+
+    public void display(){
+        if(head == null){
+            System.out.println("Nothing to display");
+        }
+        Node temp = head;
+        do{
+            System.out.print(temp.value + "->");
+            temp = temp.next;
+        }while(temp != head);
+        System.out.println();
+    }
+
+    public class Node{
+        private int value;
+        private Node next;
+
+        public Node(int value){
+            this.value = value;
+        }
+    }
+}
