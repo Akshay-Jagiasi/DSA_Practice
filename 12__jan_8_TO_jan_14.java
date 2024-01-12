@@ -364,3 +364,174 @@ public class SegmentTree {
 
 
 //____________________________________________________________________________________________________________________
+// ## Buffer.java
+// - Demonstrates the use of `StringBuffer` for efficient string manipulation.
+// - Shows various operations like `append`, `insert`, `replace`, `delete`, and `reverse`.
+// - Includes examples of removing whitespaces, splitting strings, and rounding off numbers.
+
+// ## RandomString.java
+// - Generates a random string of a specified size using `StringBuffer`.
+// - Utilizes the `Random` class to append random characters to the string.
+
+// ## Big_Integer_Decimal.java
+// - Provides examples of using `BigInteger` for handling large integers.
+// - Demonstrates basic operations such as addition, subtraction, multiplication, division, remainder, and comparison.
+// - Includes examples of using `BigDecimal` for precise decimal calculations.
+
+// ## Factorial.java
+// - Calculates the factorial of a given number using `BigInteger`.
+// - Supports handling large factorials without integer overflow.
+
+package video_52_53_54;
+//video 52
+import java.text.DecimalFormat;
+import java.util.*;
+//advantages of StringBuffer over String
+// mutable, efficient, Thread safe
+public class Buffer {
+    public static void main(String[] args) {
+        //constructor 1
+        StringBuffer sb = new StringBuffer();
+        sb.append("okay");
+
+        //constructor 2
+        StringBuffer sb2 = new StringBuffer("someone");
+
+        //constructor 3
+        // The initial capacity is useful when you have an estimate of the number of characters you might append to the StringBuffer.
+        // Providing an initial capacity can be more efficient in terms of memory usage and performance.
+        // If you know that you are going to append a large number of characters, providing an initial capacity prevents the StringBuffer
+        //from having to resize its internal character array (which is an expensive operation) multiple times as you append characters.
+        StringBuffer sb3 = new StringBuffer(30);
+
+        sb.append(" ----");
+        sb.insert(2, "yes");
+        sb.replace(1, 4,"kayyy");
+        sb.delete(2, 7);
+        sb.reverse();
+        String str = sb.toString();
+        System.out.println(str);
+
+        //remove whitespaces
+        String sentence = "Hi h    h  i       iiii      h";
+        System.out.println(sentence);
+        System.out.println(sentence.replaceAll("\\s", ""));
+
+        //split
+        String arr = "Akshay Kunal Hardik Anuj";
+        String[] names = arr.split(" ");
+        System.out.println(Arrays.toString(names));
+
+        //Rounding off
+        DecimalFormat df = new DecimalFormat("00.0000000");
+        System.out.println(df.format(7.22));
+    }
+}
+
+
+package video_52_53_54;
+import java.util.*;
+//video 52
+public class RandomString {
+    static String generate(int size){
+        StringBuffer sb = new StringBuffer(size);
+
+        Random random = new Random();
+
+        for(int i=0; i<size; i++){
+            int randomChar = 97 + (int)(random.nextFloat() * 26);
+            sb.append((char)randomChar);
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        int n = 100;
+        String name = RandomString.generate(n);
+        System.out.println(name);
+    } 
+}
+
+
+package video_52_53_54;
+import java.math.BigDecimal;
+//video 53
+import java.math.BigInteger;
+
+public class Big_Integer_Decimal {
+    public static void main(String[] args) {
+        BigInteger B = BigInteger.valueOf(6); // convert int/long to BI
+        int c = B.intValue(); // convert BI to int
+        BigInteger C = new BigInteger("2345678654325678976543256789");
+        BigInteger X = new BigInteger("4536789765432");
+
+        // constants
+        BigInteger D = BigInteger.TEN;
+
+        // operations
+        BigInteger s = C.add(X);
+        BigInteger m = C.multiply(X);
+        BigInteger sub = C.subtract(X);
+        BigInteger d = C.divide(X);
+        BigInteger rem = C.remainder(X);
+
+        if (X.compareTo(C) < 0) {
+            System.out.println("Yes");
+        }
+
+        BD();
+    }
+
+    static void BD() {
+        double x = 0.03;
+        double y = 0.04;
+        // double ans = y-x;
+        // System.out.println(ans);
+
+        BigDecimal X = new BigDecimal("0.02");
+        BigDecimal Y = new BigDecimal("0.04");
+        BigDecimal ans = Y.subtract(X);
+        // System.out.println(ans);
+
+        BigDecimal a = new BigDecimal("47345675.4576");
+        BigDecimal b = new BigDecimal("7634565352.9865764");
+
+        // operations
+        System.out.println(b.add(a));
+        System.out.println(b.subtract(a));
+        System.out.println(b.multiply(a));
+        System.out.println(b.pow(2));
+        System.out.println(b.negate());
+
+        // constants
+        BigDecimal con = BigDecimal.ONE;
+
+    }
+
+}
+
+
+package video_52_53_54;
+import java.math.BigInteger;
+public class Factorial {
+    static BigInteger fact(int num){
+        BigInteger ans = new BigInteger("1");
+        for(int i=2; i<=num; i++){
+            ans = ans.multiply(BigInteger.valueOf(i));
+        }
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Factorial.fact(99999));
+    }
+}
+
+
+
+
+
+
+
+
