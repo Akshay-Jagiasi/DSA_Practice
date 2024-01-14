@@ -528,6 +528,152 @@ public class Factorial {
     }
 }
 
+//_______________________________________________________________________________________________________________
+// Standard Input (Keyboard):
+// Reads characters from the keyboard until the input stream is ready.
+// File Reading: Reads characters from a file named "note.txt" until the input stream is ready.
+// Byte to Char Stream (User Input): Reads a line of text entered by the user from the keyboard.
+// File Reading using BufferedReader: Reads lines from the file "note.txt" until the input stream is ready.
+import java.io.*;
+class Input {
+  // Reading input from different sources
+  static void input() {
+    // Reading from standard input (keyboard)
+    try (InputStreamReader isr = new InputStreamReader(System.in)) {
+      System.out.print("Enter some letters:");
+      int letters = isr.read();
+      while(isr.ready()) {
+        System.out.println((char) letters);
+        letters = isr.read();
+      }
+      // isr.close();
+      System.out.println();
+    } catch (IOException e) {
+        System.out.println(e.getMessage());      
+    }
+
+    // Reading from a file
+    try (FileReader fr = new FileReader("note.txt")) {
+      int letters = fr.read();
+      while(fr.ready()) {
+        System.out.println((char)letters);
+        letters = fr.read();
+      }
+      // fr.close(); // Note: Using try-with-resources automatically closes FileReader
+      System.out.println();
+    } catch (IOException e) {
+        System.out.println(e.getMessage());      
+    }
+
+    // Reading from byte to char stream and then printing
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+      System.out.println("You typed: " + br.readLine());
+    } catch (IOException e) {
+        System.out.println(e.getMessage());      
+    }
+    // Reading from a file using BufferedReader
+    try (BufferedReader br = new BufferedReader(new FileReader("note.txt"))) {
+      while (br.ready()) {
+        System.out.println(br.readLine());
+      }
+    } catch (IOException e) {
+        System.out.println(e.getMessage());      
+    }
+  }
+}
+
+// Creating a New File:
+// Attempts to create a new file named "new-file.txt."
+// Writing to a File: Writes the text "नमस्कारः" (नमस्कारः) to the created file.
+// Reading from a File using BufferedReader: Uses BufferedReader to read and print the content of "new-file.txt" line by line.
+// Creating and Deleting a File: Creates a file named "random.txt" and then deletes it. If successful, prints the deleted file's name.
+import java.io.*;
+import java.io.IOException;
+import java.util.Scanner;
+
+class Main {
+  public static void main(String[] args) {
+    // Creating a new file
+    try {
+      File fo = new File("new-file.txt");
+      fo.createNewFile();
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+
+    // Writing to a file
+    try {
+      FileWriter fw = new FileWriter("new-file.txt");
+      fw.write("नमस्कारः");
+      fw.close();
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+
+    // Reading from a file using BufferedReader
+    try (BufferedReader br = new BufferedReader(new FileReader("new-file.txt"))) {
+      while (br.ready()) {
+        System.out.println(br.readLine());
+      }
+    } catch (IOException e) {
+        System.out.println(e.getMessage());      
+    }
+
+    // Creating and deleting a file
+    try {
+      File fo = new File("random.txt");
+      fo.createNewFile();
+      if(fo.delete()) {
+        System.out.println(fo.getName());
+      }
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }   
+  }
+}
+
+
+// Writing to Standard Output (Console):
+// Attempts to write characters to the standard output (System.out). Note: The commented line os.write(😍); exceeds the valid range.
+// Writing Characters using OutputStreamWriter:
+// Uses OutputStreamWriter to write various characters, including a string, an ASCII value (97), a newline character, and a single character ('A') to the standard output.
+// Appending to a File using FileWriter: Creates a FileWriter in append mode and writes the text "this should be appended" to the file "note.txt."
+// Writing to a File using BufferedWriter: Creates a BufferedWriter to efficiently write characters to the file "note.txt" and writes the text "Akshay Jagiasi."
+import java.io.*;
+
+class Output {
+    static void output() {
+    // Writing to standard output (console)
+    OutputStream os = System.out;
+    // os.write(😍); // range is exceeded
+
+    try (OutputStreamWriter osw = new OutputStreamWriter(System.out)) {
+      osw.write("Hello World");
+      osw.write(97);
+      osw.write(10);
+      osw.write('A');
+      osw.write('\n');
+      char[] arr = "hello world".toCharArray();
+      osw.write(arr);
+      // osw.write(😍);
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+    // Appending to a file using FileWriter
+    try (FileWriter fw = new FileWriter("note.txt", true)) {
+      fw.write("this should be appended");
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+    // Writing to a file using BufferedWriter
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter("note.txt"))) {
+      bw.write("Akshay Jagiasi");
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+    }
+    }
+}
+
 
 
 
