@@ -675,9 +675,384 @@ class Output {
 }
 
 
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/binary-tree-level-order-traversal/description/
+
+// Runtime 1ms
+// Beats 89.59% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+  public List<List<Integer>> levelOrder(TreeNode root) {
+      List<List<Integer>> result = new ArrayList<>();
+
+      if(root == null){
+          return result;
+      } 
+      // The 'Queue' interface is used here to represent a data structure that follows the First-In-First-Out (FIFO) principle.
+      // We are creating an instance of the 'Queue' using 'LinkedList', a class that implements the 'Queue' interface.
+      Queue<TreeNode> queue = new LinkedList<>();
+
+      // Enqueue the root node to start the traversal
+      queue.offer(root);
+
+      while(!queue.isEmpty()){
+
+          // Number of nodes at the current level
+          int levelSize = queue.size();
+
+           // List to store values of nodes at the current level
+          List<Integer> currentLevel = new ArrayList<>();
+          
+          for(int i=0; i<levelSize; i++){
+              // Dequeue the front node from the queue to process it in the current level of the binary tree.
+              TreeNode currentNode = queue.poll();
+              currentLevel.add(currentNode.val);
+              if(currentNode.left != null){
+                  queue.offer(currentNode.left);
+              }
+              if(currentNode.right != null){
+                  queue.offer(currentNode.right);
+              }
+          }
+          // Add the values of nodes at the current level to the result list
+          result.add(currentLevel);
+      }
+      return result; 
+  }
+}
 
 
 
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/binary-tree-right-side-view/description/
+
+// Runtime 1ms
+// Beats 71.57% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+  public List<Integer> rightSideView(TreeNode root) {
+   List<Integer> result = new ArrayList<>();
+
+   if (root == null) {
+     return result;
+   }
+
+   Queue<TreeNode> queue = new LinkedList<>();
+   queue.offer(root);
+
+   while (!queue.isEmpty()) {
+     int levelSize = queue.size();
+
+     for (int i=0; i < levelSize; i++) {
+       TreeNode currentNode = queue.poll();
+
+       if (i == levelSize - 1) {
+         result.add(currentNode.val);
+       }
+       
+       if (currentNode.left != null) {
+         queue.offer(currentNode.left);
+       }
+       if (currentNode.right != null) {
+         queue.offer(currentNode.right);
+       }
+     }
+   }
+   return result;
+ }
+}
 
 
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
 
+// Runtime 2ms
+// Beats 96.32% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+  public List<Double> averageOfLevels(TreeNode root) {
+   List<Double> result = new ArrayList<>();
+
+   if (root == null) {
+     return result;
+   }
+
+   Queue<TreeNode> queue = new LinkedList<>();
+   queue.offer(root);
+
+   while (!queue.isEmpty()) {
+     int levelSize = queue.size();
+     double averageLevel = 0;
+     for (int i=0; i < levelSize; i++) {
+       TreeNode currentNode = queue.poll(); 
+       averageLevel += currentNode.val;
+       if (currentNode.left != null) {
+         queue.offer(currentNode.left);
+       }
+       if (currentNode.right != null) {
+         queue.offer(currentNode.right);
+       }
+     }
+       averageLevel = averageLevel / levelSize;
+       result.add(averageLevel);
+   }
+   return result;
+ }
+}
+
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/
+
+// Runtime 1ms
+// Beats 84.39% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+  public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+  List<List<Integer>> result = new ArrayList<>();
+
+  if (root == null) {
+    return result;
+  }
+
+  // Use a deque to perform level-order traversal
+  Deque<TreeNode> queue = new LinkedList<>();
+  queue.add(root);
+
+  // Variable to determine whether to reverse the order for each level
+  boolean reverse = false;
+  
+  while (!queue.isEmpty()) {
+    int levelSize = queue.size();
+    List<Integer> currentLevel = new ArrayList<>(levelSize);
+    for (int i=0; i < levelSize; i++) {
+      if (!reverse) {
+        // Process nodes from the front of the deque
+        TreeNode currentNode = queue.pollFirst();
+        currentLevel.add(currentNode.val);
+        if (currentNode.left != null) {
+          queue.addLast(currentNode.left);
+        }
+        if (currentNode.right != null) {
+          queue.addLast(currentNode.right);
+        }
+      }else {
+        // Process nodes from the back of the deque
+        TreeNode currentNode = queue.pollLast();
+        currentLevel.add(currentNode.val);
+
+
+        if (currentNode.right != null) {
+          queue.addFirst(currentNode.right);
+        }
+        if (currentNode.left != null) {
+          queue.addFirst(currentNode.left);
+        }
+      }
+    }
+    // Toggle the 'reverse' flag for the next level
+    reverse = !reverse;
+    result.add(currentLevel);
+  }
+  return result;
+  }
+}
+
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/binary-tree-level-order-traversal-ii/description/
+
+// Runtime 1ms
+// Beats 93.27% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+  public List<List<Integer>> levelOrderBottom(TreeNode root) {
+      List<List<Integer>> result = new ArrayList<>();
+
+      if (root == null) {
+          return result;
+      }
+
+      Queue<TreeNode> queue = new LinkedList<>();
+      queue.offer(root);
+
+      while (!queue.isEmpty()) {
+          int levelSize = queue.size();
+          List<Integer> currentLevel = new ArrayList<>(levelSize);
+          
+          for (int i = 0; i < levelSize; i++) {
+              TreeNode currentNode = queue.poll();
+              currentLevel.add(currentNode.val);
+              
+              if (currentNode.left != null) {
+                  queue.offer(currentNode.left);
+              }
+              if (currentNode.right != null) {
+                  queue.offer(currentNode.right);
+              }
+          }
+          
+          result.add(0, currentLevel); // Insert at the beginning to reverse the order
+      }
+
+      return result;
+  }
+}
+
+
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/description/
+
+// Runtime 0ms
+// Beats 100.00% of users with Java
+
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+    
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+  public Node connect(Node root) {
+    if (root == null){
+      return null;
+    }
+
+    Node leftMost = root;
+
+    while (leftMost.left != null) {
+      Node current = leftMost;
+      while(current != null) {
+        current.left.next = current.right;
+        if(current.next != null) {
+          current.right.next = current.next.left;
+        }
+        current = current.next;
+      }
+      leftMost = leftMost.left;
+    }
+    return root;
+  }
+}
+
+
+//_______________________________________________________________________________________________________________
+// Problem Statement: Find Level-Order Successor in Binary Tree
+// You are given the root of a binary tree and an integer key.
+// Write a function findSuccessor to find the level-order successor of the node with the given key.
+// The level-order successor of a node in a binary tree is the node that appears immediately after 
+// the given node in a level-order traversal.
+
+public TreeNode findSuccessor(TreeNode root, int key){
+  if (root == null) {
+    return null;
+  }
+
+  Queue<TreeNode> queue = new LinkedList<>();
+  queue.offer(root);
+
+  while (!queue.isEmpty()) {
+    int levelSize = queue.size();
+      TreeNode currentNode = queue.poll();
+      if (currentNode.left != null) {
+        queue.offer(currentNode.left);
+      }
+      if (currentNode.right != null) {
+        queue.offer(currentNode.right);
+      }
+      if (currentNode.val = key) {
+        break;
+      }
+  }
+  return queue.peek(); 
+}
