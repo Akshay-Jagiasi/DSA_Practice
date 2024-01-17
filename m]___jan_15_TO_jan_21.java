@@ -249,3 +249,140 @@ public class Main {
 [2392, 222, 22, 20, 12, 2]
 2
 3422
+
+
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/cousins-in-binary-tree/description/
+
+// Runtime 0ms
+// Beats 100.00% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isCousins(TreeNode root, int x, int y) {
+   TreeNode xx = findNode(root, x);
+   TreeNode yy = findNode(root, y);
+
+   // Return true if both nodes are at the same level and are not siblings
+   return (
+     (level(root, xx, 0) == level(root, yy, 0)) && (!isSibling(root, xx, yy))
+   );
+}
+
+ // Helper function to find a TreeNode with a specific value in the tree
+ TreeNode findNode(TreeNode node, int x) {
+   if (node == null) {
+     return null;
+   }
+   if (node.val == x) {
+     return node;
+   }
+
+   // Recursively search for the target value in the left subtree
+   TreeNode n = findNode(node.left, x);
+   if (n != null) {
+     return n;
+   }
+   return findNode(node.right, x);
+ }
+
+ boolean isSibling (TreeNode node, TreeNode x, TreeNode y) {
+   if (node == null) {
+     return false;
+   }
+
+   //return true if x and y are siblings 
+   return (
+     (node.left == x && node.right == y) || (node.left == y && node.right == x)
+     || isSibling(node.left, x, y) || isSibling(node.right, x, y)
+   );
+ }
+ 
+ // Helper function to find the level of a specific node in the tree
+ int level (TreeNode node, TreeNode x, int lev) {
+   if(node == null) {
+     return 0;
+   }
+
+   if(node == x) {
+     return lev;
+   }
+
+   // Recursively search for the target node in the left subtree
+   int l = level(node.left, x, lev+1);
+
+   // If the target node is found in the left subtree, return its level
+   if (l != 0) {
+     return l;
+   }
+
+   // If the target node is not found in the left subtree, recursively search in the right subtree
+   return level(node.right, x, lev+1);
+ }
+}
+
+
+//_______________________________________________________________________________________________________________
+https://leetcode.com/problems/symmetric-tree/
+
+// Runtime 1ms
+// Beats 22.51% of users with Java
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root.left);
+        queue.add(root.right);
+
+        while(!queue.isEmpty()){
+            TreeNode left = queue.poll();
+            TreeNode right = queue.poll();
+
+            if(left == null && right == null){
+                continue;
+            }
+            if(left == null || right == null){
+                return false;
+            }
+
+            if(left.val != right.val){
+                return false;
+            }
+
+            queue.add(left.left);
+            queue.add(right.right);
+            queue.add(left.right);
+            queue.add(right.left);
+        }
+        return true;
+    }
+}
