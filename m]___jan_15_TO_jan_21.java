@@ -191,7 +191,6 @@ class MaxPriorityQueue<T extends Comparable<T>> extends MaxHeap<T> {
 
 
 package Heap;
-
 import java.util.ArrayList;
 
 public class Main {
@@ -460,7 +459,6 @@ interface HashMapStrategy<K, V> {
 // When to use:
 // - Use ChainingHashMap when you expect a high number of collisions in your hash map.
 // - Well-suited for scenarios with frequent insertions, deletions, and updates.
-// - Provides good performance in situations where the load factor may vary.
 // - Dynamic resizing helps maintain a balance between space and time complexity.
 package HashMap;
 import java.util.LinkedList;
@@ -570,8 +568,8 @@ public class ChainingHashMap <K, V> implements HashMapStrategy<K, V>{
 }
 
 
-// OpenAddressingTechnique is an abstract class serving as a base for open addressing techniques such as linear probing, quadratic probing, and double hashing.
-// It provides common functionality for handling collisions and resizing.
+// OpenAddressingTechnique is an abstract class serving as a base for open addressing techniques such as
+// linear probing, quadratic probing, and double hashing.
 package HashMap;
 
 public abstract class OpenAddressingTechnique <K, V>{
@@ -606,10 +604,9 @@ public abstract class OpenAddressingTechnique <K, V>{
 // It searches for the next available slot linearly in case of collisions.
 // 
 // When to use:
-// - Use LinearProbingHashMap when you expect a moderate number of collisions in your hash map.
-// - Well-suited for scenarios with a relatively low load factor and a low likelihood of extensive clustering.
-// - Provides good performance in scenarios with a stable load factor and minimal resizing requirements.
-// - Efficient for scenarios where key access patterns exhibit locality.
+// Use it when you think there will be a fair number of collisions in your hash map.
+// Well-suited for situations with a reasonably low load factor and low chance of clustering.
+// Works well in scenarios where you want stable performance without frequent resizing.
 package HashMap;
 import java.util.Arrays;
 
@@ -699,12 +696,8 @@ public class LinearProbingHashMap<K, V> extends OpenAddressingTechnique<K, V> im
 //  When to use:
 //  - Use QuadraticProbingHashMap when you expect a moderate number of collisions in your hash map.
 //  - Well-suited for scenarios with a relatively low load factor and a low likelihood of extensive clustering.
-//  - Provides better dispersion compared to linear probing, resulting in reduced clustering.
-//  - Efficient for scenarios where key access patterns exhibit moderate locality.
-
-
+//  - Provides better distribution compared to linear probing, resulting in reduced clustering.
 package HashMap;
-
 import java.util.Arrays;
 
 public class QuadraticProbingHashMap<K, V> extends OpenAddressingTechnique<K, V> implements HashMapStrategy<K, V> {
@@ -799,7 +792,7 @@ public class QuadraticProbingHashMap<K, V> extends OpenAddressingTechnique<K, V>
 //  When to use:
 //  - Use DoubleHashingHashMap when dealing with scenarios where linear or quadratic probing may lead to clustering.
 //  - Well-suited for hash maps with a moderate to high load factor or scenarios prone to clustering.
-//  - Provides improved dispersion compared to linear and quadratic probing, reducing clustering effects.
+//  - Provides improved distribution compared to linear and quadratic probing, reducing clustering effects.
 //  - Efficient for scenarios where the key access patterns may lead to a higher likelihood of collisions.
 
 package HashMap;
