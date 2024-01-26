@@ -1,4 +1,4 @@
-https://leetcode.com/problems/invert-binary-tree/description/
+Q1: https://leetcode.com/problems/invert-binary-tree/description/
 
 /**
  * Definition for a binary tree node.
@@ -35,8 +35,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+Q2: https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
 
 /**
  * Definition for a binary tree node.
@@ -72,8 +74,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/
+Q3: https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/
 
 /**
  * Definition for a binary tree node.
@@ -118,8 +122,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
+Q4: https://leetcode.com/problems/flatten-binary-tree-to-linked-list/description/
 
 /**
  * Definition for a binary tree node.
@@ -159,8 +165,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/validate-binary-search-tree/description/
+Q5: https://leetcode.com/problems/validate-binary-search-tree/description/
 
 /**
  * Definition for a binary tree node.
@@ -207,8 +215,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
+Q6: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
 
 /**
  * Definition for a binary tree node.
@@ -244,8 +254,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/kth-smallest-element-in-a-bst/description/
+Q7: https://leetcode.com/problems/kth-smallest-element-in-a-bst/description/
 
 /**
  * Definition for a binary tree node.
@@ -293,8 +305,10 @@ class Solution {
     }
 }
 
+
+
 //__________________________________________________________________________________________________________________________________________
-https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
+Q8: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
 
 /**
  * Definition for a binary tree node.
