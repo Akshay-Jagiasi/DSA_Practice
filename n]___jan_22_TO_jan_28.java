@@ -579,3 +579,219 @@ class Solution {
         return Math.max(left, right) + node.val;
     }
 }
+
+//__________________________________________________________________________________________________________________________________________
+Q13:// Problem Statement: Path Existence in Binary Tree
+// You are given a binary tree where each node has an integer value.
+// Write a function boolean findPath(TreeNode root, int[] arr) to determine
+// whether a given array arr forms a valid path in the binary tree.
+// A valid path in the binary tree is a sequence of nodes from the root to a leaf node,
+// where the values in the sequence match the values in the array arr from the root to the leaf.
+
+//Example:
+// Tree:
+//        3
+//       / \
+//      5   9
+//         / \
+//       10   12
+//      /     /
+//    16      8
+
+// Array: [3, 9, 12, 8]
+// Output: true
+
+//Array: [3, 9, 12, 16]
+//Output: false
+
+boolean findPath(Node node, int[] arr){
+    if(node == null){
+        return arr.length == 0;
+    }
+    return helper(node, arr, 0);
+}
+
+boolean helper(Node node, int[] arr, int index){
+    if(node == null){
+        return false;
+    }
+
+    if(index >= arr.length || node.val != arr[index]){
+        return false;
+    }
+
+    if(node.left == null && node.right == null && index == arr.length-1){
+        return true;
+    }
+
+    return helper(node.left, arr, index+1) || helper(node.right, arr, index+1);
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q14://Problem Statement: Find Paths start from root and end at leaf node with Given Sum 
+// Given a binary tree where each node has an integer value,
+// write a function findPaths to find and return a list of all paths in the tree that sum to a given target value.
+// However, in this problem, paths should specifically start from the root and end at a leaf node.
+// Example:
+// Tree:
+//           1
+//          / \
+//         3   2
+//            / \
+//           1   3
+//          /   /
+//        11   2
+//              \
+//               2
+//              /
+//            16
+// targetSum = 4
+//OUTPUT: [[1,3]]
+
+List<List<Integer>> findPaths(Node node, int sum) {
+    // Initialize a list to store all found paths
+    List<List<Integer>> paths = new ArrayList<>();
+    // Initialize a list to represent the current path
+    List<Integer> path = new ArrayList<>();
+    helper(node, sum, path, paths);
+    return paths;
+}
+
+void helper(Node node, int sum, List<Integer> path, List<List<Integer>> paths) {
+    if (node == null) {
+        return;
+    }
+
+    // Add the current node's value to the current path
+    path.add(node.val);
+
+    // Check if the current node is a leaf and the path sum equals the target sum
+    if (node.val == sum && node.left == null && node.right == null) {
+        // Add a copy of the current path to the list of paths
+        paths.add(new ArrayList<>(path));
+    } else {
+        // Recursively explore the left subtree with the updated path
+        helper(node.left, sum - node.val, new ArrayList<>(path), paths);
+        // Recursively explore the right subtree with the updated path
+        helper(node.right, sum - node.val, new ArrayList<>(path), paths);
+    }
+
+    // Backtrack: remove the last element from the current path
+    path.remove(path.size() - 1);
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q15:// Problem Statement: Path Sum Count | all possible paths count
+// Given a binary tree where each node has an integer value, write a function countPaths
+// to find and return the number of paths in the tree that sum to a given target value.
+
+// Example:
+// Tree:
+//           1
+//          / \
+//         3   2
+//            / \
+//           1   3
+//          /   /
+//        11   2
+//              \
+//               2
+//              /
+//            16
+// targetSum = 4
+//OUTPUT: 3 explanation:<1,3>, <1,2,1>, <2,2> 3 paths are there whose sum is equals to targetSum
+
+int countPaths(Node node, int sum) {
+    // Initialize an empty list to store the current path
+    List<Integer> path = new ArrayList<>();
+    return helper(node, sum, path);
+}
+
+int helper(Node node, int sum, List<Integer> path) {
+    if (node == null) {
+        return 0;
+    }
+
+    path.add(node.val);
+    int count = 0;
+    int runningSum = 0;
+    // Create a list iterator starting from the end of the path
+    ListIterator<Integer> itr = path.listIterator(path.size());
+
+    // Iterate through the path from the end to the beginning
+    while (itr.hasPrevious()) {
+        // Update the running sum
+        runningSum += itr.previous();
+        // If the running sum equals the target sum, increment the count
+        if (runningSum == sum) {
+            count++;
+        }
+    }
+
+    // Recursively explore left and right subtrees and add their counts to the overall count
+    count += helper(node.left, sum, path) + helper(node.right, sum, path);
+
+    // Backtrack by removing the last element from the path
+    path.remove(path.size() - 1);
+
+    // Return the total count of valid paths
+    return count;
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q16:// Problem Statement: Find Paths start at any node and end at any node 
+// Given a binary tree where each node has an integer value,
+// write a function countPaths to find and return a list of all paths in the tree that sum to a given target value.
+// Important Notes:
+// Paths can start at any node and end at any node.
+// The paths should be returned as a list of lists, where each inner list represents a path from any node to any node whose values sum to the target value.
+// Example:
+// Tree:
+//           1
+//          / \
+//         3   2
+//            / \
+//           1   3
+//          /   /
+//        11   2
+//              \
+//               2
+//              /
+//            16
+// targetSum = 4
+//OUTPUT: [[1,3],[1,2,1],[2,2]]
+List<List<Integer>> allPaths(Node node, int sum) {
+    List<List<Integer>> result = new ArrayList<>();
+    List<Integer> path = new ArrayList<>();
+    helper(node, sum, path, result);
+    return result;
+}
+
+void helper(Node node, int sum, List<Integer> path, List<List<Integer>> result) {
+    if (node == null) {
+        return;
+    }
+
+    path.add(node.val);
+    int runningSum = 0;
+    ListIterator<Integer> itr = path.listIterator(path.size());
+
+    while (itr.hasPrevious()) {
+        runningSum += itr.previous();
+        if (runningSum == sum) {
+            // Found a path, add a copy of the current path to the result
+            result.add(new ArrayList<>(path));
+        }
+    }
+
+    helper(node.left, sum, new ArrayList<>(path), result);
+    helper(node.right, sum, new ArrayList<>(path), result);
+
+    path.remove(path.size() - 1);
+} 
