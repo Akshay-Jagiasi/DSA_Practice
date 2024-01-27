@@ -795,3 +795,75 @@ void helper(Node node, int sum, List<Integer> path, List<List<Integer>> result) 
 
     path.remove(path.size() - 1);
 } 
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q17:// Problem Statement: Traversals using a Stack
+// Given a binary tree, implement three different depth-first traversal algorithms using a stack: In-Order, Pre-Order, and Post-Order.
+
+// In-order traversal using a stack
+void inOrderDFSStack(Node node) {
+    if (node == null) {
+        return;
+    }
+    Stack<Node> stack = new Stack<>();
+    Node current = node;
+
+    while (current != null || !stack.isEmpty()) {
+        while (current != null) {
+            stack.push(current);
+            current = current.left;
+        }
+        current = stack.pop();
+        System.out.print(current.val + " ");
+        current = current.right;
+    }
+}
+
+// Pre-order traversal using a stack
+void preOrderDFSStack(Node node) {
+    if (node == null) {
+        return;
+    }
+    Stack<Node> stack = new Stack<>();
+    stack.push(node);
+
+    while (!stack.isEmpty()) {
+        Node removed = stack.pop();
+        System.out.print(removed.val + " ");
+        if (removed.right != null) {
+            stack.push(removed.right);
+        }
+        if (removed.left != null) {
+            stack.push(removed.left);
+        }
+    }
+}
+
+// Post-order traversal using a stack
+void postOrderDFSStack(Node node) {
+    if (node == null) {
+        return;
+    }
+    Stack<Node> stack1 = new Stack<>();
+    Stack<Node> stack2 = new Stack<>();
+
+    stack1.push(node);
+
+    while (!stack1.isEmpty()) {
+        Node removed = stack1.pop();
+        stack2.push(removed);
+
+        if (removed.left != null) {
+            stack1.push(removed.left);
+        }
+        if (removed.right != null) {
+            stack1.push(removed.right);
+        }
+    }
+
+    while (!stack2.isEmpty()) {
+        System.out.print(stack2.pop().val + " ");
+    }
+}
