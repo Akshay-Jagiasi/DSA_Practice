@@ -445,3 +445,137 @@ public class Codec {
 // Codec ser = new Codec();
 // Codec deser = new Codec();
 // TreeNode ans = deser.deserialize(ser.serialize(root));
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q10: https://leetcode.com/problems/path-sum/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+ Runtime 0ms
+ Beats 100.00% of users with Java 
+
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root == null){
+            return false;
+        }
+
+        if(root.val == targetSum && root.left == null && root.right == null){
+            return true;
+        }
+
+        return hasPathSum(root.left, targetSum-root.val) || hasPathSum(root.right, targetSum-root.val); 
+    }
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q11: https://leetcode.com/problems/sum-root-to-leaf-numbers/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+ Runtime 0ms
+ Beats 100.00% of users with Java
+
+class Solution {
+    public int sumNumbers(TreeNode root) {
+       return helper(root, 0); 
+    }
+
+    public int helper(TreeNode node, int sum){
+        if(node == null){
+            return 0;
+        }
+
+        sum = sum * 10 + node.val;
+
+        if(node.left == null && node.right == null){
+            return sum;
+        }
+
+        return helper(node.left, sum) + helper(node.right, sum);
+    }
+}
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q12: https://leetcode.com/problems/binary-tree-maximum-path-sum/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+
+ Runtime 0ms
+ Beats 100.00% of users with Java
+
+//In future draw the tree and debug the code for understanding the working
+class Solution {
+    int ans = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        helper(root);
+        return ans;
+    }
+
+    int helper(TreeNode node){
+        if(node == null){
+            return 0;
+        }
+
+        int left = helper(node.left);
+        int right = helper(node.right);
+
+        //By using Math.max(0, left) and Math.max(0, right), the algorithm ensures that if the contribution from a branch is negative, it is replaced with 0.
+        //This effectively prevents negative contributions from being added to the path sum calculation.
+        left = Math.max(0, left);
+        right = Math.max(0, right);
+
+        int pathSum = left + right + node.val;
+        ans = Math.max(ans, pathSum);
+
+        return Math.max(left, right) + node.val;
+    }
+}
