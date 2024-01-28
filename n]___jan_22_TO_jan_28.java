@@ -1039,7 +1039,7 @@ class Solution {
 
 
 //__________________________________________________________________________________________________________________________________________
-Q22: https://leetcode.com/problems/reorder-list/description/
+Q21: https://leetcode.com/problems/reorder-list/description/
 
 /**
  * Definition for singly-linked list.
@@ -1118,7 +1118,7 @@ class Solution {
 
 
 //__________________________________________________________________________________________________________________________________________
-Q21: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+Q22: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
 
 //Time Complexity  O(n^2)
 //Time Limit Exceeded at 91 testcase
