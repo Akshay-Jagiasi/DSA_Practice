@@ -1051,6 +1051,10 @@ Q21: https://leetcode.com/problems/reorder-list/description/
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
+Runtime 2ms
+Beats 88.54% of users with Java
+
 class Solution {
     public void reorderList(ListNode head) {
         if (head == null || head.next == null) {
