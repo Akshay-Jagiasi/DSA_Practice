@@ -1035,3 +1035,36 @@ class Solution {
       return prev;
   }
 }
+
+
+
+//__________________________________________________________________________________________________________________________________________
+Q21: https://leetcode.com/problems/largest-rectangle-in-histogram/description/
+
+//Time Complexity  O(n^2)
+//Time Limit Exceeded at 91 testcase
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int maxArea = 0;
+
+        // Iterate through each bar in the histogram
+        for(int i=0; i<n; i++){
+            int minHeight = heights[i];
+
+            // Extend to the left
+            for(int j=i; j>=0; j--){
+                // Update the minHeight with the minimum height encountered
+                minHeight = Math.min(minHeight, heights[j]);
+
+                // Calculate the width and area of the rectangle
+                int width = i - j + 1;
+                int area = minHeight * width;
+
+                // Update the maxArea if the current rectangle has a larger area
+                maxArea = Math.max(maxArea, area);
+            }
+        }
+        return maxArea;
+    }
+}
