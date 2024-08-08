@@ -192,12 +192,15 @@ public class binarySearch2D {
     }
 
     static int[] search2(int[][] matrix, int target){
+        // The number of rows and columns is determined.
         int rows = matrix.length;
         int cols = matrix[0].length;
 
         if(cols == 0){
             return new int[]{-1,-1};
         }
+
+        // If there is only one row, directly perform a binary search on that row.
         if(rows == 1){
             return binarySearch(matrix, target, 0, 0, cols-1);
         }
@@ -206,6 +209,11 @@ public class binarySearch2D {
         int rEnd = rows-1;
         int cMid = cols/2;
 
+        // int[][] arr = {
+        //     {11, 22, 33},
+        //     {44, 55, 67},
+        //     {77, 88, 99}
+        // };
         // run the loop till 2 rows are remaining
         while(rStart< (rEnd-1)){
             int mid = rStart +(rEnd-rStart)/2;
