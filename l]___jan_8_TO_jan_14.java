@@ -1026,7 +1026,6 @@ class Solution {
 }
 
 
-//_______________________________________________________________________________________________________________
 // Problem Statement: Find Level-Order Successor in Binary Tree
 // You are given the root of a binary tree and an integer key.
 // Write a function findSuccessor to find the level-order successor of the node with the given key.

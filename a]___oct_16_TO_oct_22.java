@@ -49,8 +49,10 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧
 // Find Smallest Letter Greater Than Target
-// You are given an array of characters letters that is sorted in non-decreasing order, and a character target. There are at least two different characters in letters.
-// Return the smallest character in letters that is lexicographically greater than target. If such a character does not exist, return the first character in letters.
+// You are given an array of characters letters that is sorted in non-decreasing order, 
+// and a character target. There are at least two different characters in letters.
+// Return the smallest character in letters that is lexicographically greater than target.
+// If such a character does not exist, return the first character in letters.
 
 // Example 1:
 // Input: letters = ["c","f","j"], target = "a"
@@ -79,7 +81,8 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧
 // Find First and Last Position of Element in Sorted Array
-// Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
+// Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of
+// a given target value.
 
 // If target is not found in the array, return [-1, -1].
 // You must write an algorithm with O(log n) runtime complexity.
@@ -168,11 +171,13 @@ class Solution {
 // There exists some i with 0 < i < arr.length - 1 such that:
 // arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
 // arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
-// Given a mountain array mountainArr, return the minimum index such that mountainArr.get(index) == target. If such an index does not exist, return -1.
+// Given a mountain array mountainArr, return the minimum index such that mountainArr.get(index) == target. 
+// If such an index does not exist, return -1.
 // You cannot access the mountain array directly. You may only access the array using a MountainArray interface:
 // MountainArray.get(k) returns the element of the array at index k (0-indexed).
 // MountainArray.length() returns the length of the array.
-// Submissions making more than 100 calls to MountainArray.get will be judged Wrong Answer. Also, any solutions that attempt to circumvent the judge will result in disqualification.
+// Submissions making more than 100 calls to MountainArray.get will be judged Wrong Answer.
+//1 Also, any solutions that attempt to circumvent the judge will result in disqualification.
 
 // Example 1:
 // Input: array = [1,2,3,4,5,3,1], target = 3
