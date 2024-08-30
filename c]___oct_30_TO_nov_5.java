@@ -2,7 +2,8 @@
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 1
 // Concatenation of Array
-// Given an integer array nums of length n, you want to create an array ans of length 2n where ans[i] == nums[i] and ans[i + n] == nums[i] for 0 <= i < n (0-indexed).
+// Given an integer array nums of length n, you want to create an array ans of length 2n
+// where ans[i] == nums[i] and ans[i + n] == nums[i] for 0 <= i < n (0-indexed).
 // Specifically, ans is the concatenation of two nums arrays.
 // Return the array ans.
 
@@ -29,8 +30,10 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 2
 // Richest Customer Wealth
-// You are given an m x n integer grid accounts where accounts[i][j] is the amount of money the i​​​​​​​​​​​th​​​​ customer has in the j​​​​​​​​​​​th​​​​ bank. Return the wealth that the richest customer has.
-// A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.
+// You are given an m x n integer grid accounts where accounts[i][j] is the amount of money
+// the i​​​​​​​​​​​th​​​​ customer has in the j​​​​​​​​​​​th​​​​ bank. Return the wealth that the richest customer has.
+// A customer's wealth is the amount of money they have in all their bank accounts.
+// The richest customer is the customer that has the maximum wealth.
 
 // Example 1:
 // Input: accounts = [[1,2,3],[3,2,1]]
@@ -82,8 +85,10 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 4
 // . Kids With the Greatest Number of Candies
-// There are n kids with candies. You are given an integer array candies, where each candies[i] represents the number of candies the ith kid has, and an integer extraCandies, denoting the number of extra candies that you have.
-// Return a boolean array result of length n, where result[i] is true if, after giving the ith kid all the extraCandies, they will have the greatest number of candies among all the kids, or false otherwise.
+// There are n kids with candies. You are given an integer array candies, where each candies[i] represents 
+// the number of candies the ith kid has, and an integer extraCandies, denoting the number of extra candies that you have.
+// Return a boolean array result of length n, where result[i] is true if, after giving the ith kid all the extraCandies,
+// they will have the greatest number of candies among all the kids, or false otherwise.
 // Note that multiple kids can have the greatest number of candies.
 
 // Example 1:
@@ -149,7 +154,9 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 6
 // How Many Numbers Are Smaller Than the Current Number
-// Given the array nums, for each nums[i] find out how many numbers in the array are smaller than it. That is, for each nums[i] you have to count the number of valid j's such that j != i and nums[j] < nums[i].
+// Given the array nums, for each nums[i] find out how many numbers in the array are 
+// smaller than it. That is, for each nums[i] you have to count the number of
+// valid j's such that j != i and nums[j] < nums[i].
 // Return the answer in an array.
 
 // Example 1:
@@ -250,7 +257,8 @@ class Solution {
 
 //𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧 9
 // Build Array from Permutation
-// Given a zero-based permutation nums (0-indexed), build an array ans of the same length where ans[i] = nums[nums[i]] for each 0 <= i < nums.length and return it.
+// Given a zero-based permutation nums (0-indexed), build an array ans of the same length
+// where ans[i] = nums[nums[i]] for each 0 <= i < nums.length and return it.
 // A zero-based permutation nums is an array of distinct integers from 0 to nums.length - 1 (inclusive).
 
 // Example 1:
@@ -263,7 +271,22 @@ class Solution {
 class Solution {
     public int[] buildArray(int[] nums) {
         int n = nums.length;
+        int[] ans = new int[n]; // Create a new array to store results
+        
+        // Iterate through each index and populate ans[i] = nums[nums[i]]
         for (int i = 0; i < n; i++) {
+            ans[i] = nums[nums[i]];
+        }
+        
+        return ans; // Return the resulting array
+    }
+} //Time Complexity O(n) Space Complexity O(n)
+
+
+class Solution {
+    public int[] buildArray(int[] nums) {
+        int n = nums.length;
+        for (int i = 0; i < n; i++) { 
             int newValue = nums[i]; // Store the new value
             int oldValue = nums[nums[i]] % n; // Store the old value
             // Encode both values at this index
@@ -275,7 +298,8 @@ class Solution {
         }
         return nums; 
     }
-}
+} //Time Complexity O(n) Space Complexity O(1)
+
 
 
 //------------------------------------------------------------------------------------
