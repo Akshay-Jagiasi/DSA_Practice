@@ -415,3 +415,150 @@ class Solution {
         return null;     
     }
 }
+
+
+
+//-------------------------------------------------------------------------------
+Q12: https://leetcode.com/problems/fruit-into-baskets/description/
+
+//Time Complexity (n^2)   //TLE at testcase 70 out of 91
+// class Solution {
+//     public int totalFruit(int[] fruits) {
+//         int n = fruits.length;
+//         int maxFruits = 0;
+
+        //Iterate over all possible starting points
+//         for(int i=0; i<n; i++){
+
+//             //Using Hashset here for avoiding duplicates 
+//             HashSet<Integer> basket = new HashSet<>();
+//             int count = 0;
+
+//             for(int j=i; j<n; j++){
+//                 basket.add(fruits[j]);
+
+//                 //if more two types of store in the basket break 
+//                 if(basket.size() > 2) break;
+
+//                 //Increment the fruits collected in sub array 
+//                 count++;
+
+//             }
+
+//             //Update the maximum number of fruits collected
+//             maxFruits = Math.max(maxFruits, count);
+//         }
+
+//         return maxFruits;
+//     }
+// }
+
+
+//Sliding Window Approach //Time Complexity O(n)
+class Solution {
+    public int totalFruit(int[] fruits) {
+        HashMap <Integer, Integer> basket= new HashMap<>();
+        int left = 0;
+        int maxFruits = 0;
+
+        for(int right=0; right<fruits.length; right++){
+            //Add current to Basket
+            int currentCount = basket.getOrDefault(fruits[right], 0);
+            basket.put(fruits[right], currentCount+1);
+
+            //If the basket contains more than two types of fruits then shrink the window
+            while(basket.size() > 2){
+                int fruitCount = basket.get(fruits[left]);
+                if(fruitCount == 1){
+                    basket.remove(fruits[left]);
+                }else{
+                    basket.put(fruits[left], fruitCount - 1);
+                }
+                //left++ shrink the window 
+                left++;
+            }
+            maxFruits = Math.max(maxFruits, right-left+1);
+        }
+        return maxFruits;
+    }
+}
+
+
+
+//-------------------------------------------------------------------------------
+Q13: https://leetcode.com/problems/minimum-cost-to-make-array-equal/description/
+
+// //BruteForce Approach TLE on Testcase 28 iy of 48
+
+// class Solution {
+//     public long minCost(int[] nums, int[] cost) {
+//         int minValue = Integer.MAX_VALUE;
+//         int maxValue = Integer.MIN_VALUE;
+
+//         // Determine the minimum and maximum values in nums
+//         for(int num : nums){
+//             minValue = Math.min(minValue, num);
+//             maxValue = Math.max(maxValue, num);
+//         }
+
+//         long minCost = Long.MAX_VALUE;
+
+//         // Try every value from minValue to maxValue
+//         for(int target = minValue; target <= maxValue; target++){
+//             long currentCost = 0;
+
+//             // Calculate the cost to make all elements equal to 'target'
+//             for(int i=0; i<nums.length; i++){
+//                 currentCost += (long) Math.abs(nums[i] - target) * cost[i];
+//             }
+//             minCost = Math.min(minCost, currentCost);
+//         }
+//         return minCost;
+//     }
+// }
+
+//Binary Search Approach
+class Solution {
+    public long minCost(int[] nums, int[] cost) {
+        long left = Long.MAX_VALUE;
+        long right = Long.MIN_VALUE;
+
+        // Determine the range for binary search (min and max values in the array)
+        for(int i=0; i<nums.length; i++){
+            left = Math.min(nums[i], left);
+            right = Math.max(nums[i], right);
+        }
+
+        // Variable to store the index of the potential optimal value
+        long ind = 0;
+
+        // Perform binary search to find the optimal value that minimizes the cost
+        while(left <= right){
+            long mid = left + (right - left) / 2;
+
+            // Compare the costs for mid and mid + 1 to determine the direction of search
+            if(solve(nums, mid, cost) < solve(nums, mid+1, cost)){
+                ind = mid;
+                right = mid-1;
+            }else{
+                left = mid + 1;
+            }
+        }
+
+        // Return the minimum cost calculated for the optimal value found
+        return solve(nums, ind, cost);
+    }
+
+    // Function to calculate the total cost for converting all nums elements to a specific target value (mid)
+    public long solve(int[] nums, long mid, int[] cost){
+        long ans = 0;
+        for(int i=0; i<nums.length; i++){
+            ans += Math.abs(nums[i] - mid) * cost[i];
+        }
+
+        return ans;
+    }
+}
+
+
+
