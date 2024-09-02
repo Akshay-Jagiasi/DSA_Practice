@@ -142,3 +142,72 @@ class Solution {
         return -1;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q4: https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/
+
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int left = getMax(weights);
+        int right = getSum(weights);
+        
+        // While (left <= right) is used in standard binary searches for finding exact values.
+        // The loop ensures all positions are checked and executes one last time if left == right.
+        // While (left < right) is used to narrow down to the smallest/largest valid option.
+        // The loop ends when left and right converge to a single point, representing the answer.
+        // Extra iteration with (left <= right) can lead to unnecessary checks and off-by-one errors.
+        // It can also risk infinite loops if left and right don’t move as expected
+        // TLE occured thats why explained above 
+        while(left < right){
+
+            int mid = left + (right-left) / 2;
+            
+            //check if it is possible to check all packages within 'days' using 'mid' capacity
+            if(canShipInDays(weights, days, mid)){
+                //if possible, try a samller capacity
+                right = mid;
+            }else{
+                //if not possible, try a larger capacity
+                left = mid + 1;
+            }
+        }
+
+        return left;
+    }
+
+    //Helper Function
+    static int getMax(int[] weights){
+        int maxWeight = 0;
+        for(int weight : weights){
+            maxWeight = Math.max(weight, maxWeight);
+        }
+        return maxWeight;
+    }
+
+    //Helper Function
+    static int getSum(int[] weights){
+        int sum = 0;
+        for(int weight : weights){
+            sum += weight;
+        }
+        return sum;
+    }
+
+    static boolean canShipInDays(int[] weights, int days, int capacity){
+        int currentWeight = 0;
+        int daysNeeded = 1;
+        
+        for(int weight : weights){
+            if(currentWeight + weight > capacity){
+                daysNeeded++;
+                currentWeight = 0;
+            }
+            currentWeight += weight;
+        }
+
+        return daysNeeded <= days;
+    }
+}
+
