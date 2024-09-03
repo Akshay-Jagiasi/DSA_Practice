@@ -211,3 +211,151 @@ class Solution {
     }
 }
 
+
+
+//___________________________________________________________________________________________________________________________
+Q5: https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/description/
+
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = {-1, -1};
+        int start = search(nums, target, true);
+        int end = search(nums, target, false);
+
+        ans[0] = start;
+        ans[1] = end;
+
+        return ans;
+    }
+
+    static int search(int[] nums, int target, boolean firstIndex){
+        int start = 0;
+        int end = nums.length-1;
+        int ans = -1;
+
+        while(start <= end){
+            int mid = start + (end - start) / 2;
+
+            if(target < nums[mid]){
+                end = mid - 1;
+            }else if(target > nums[mid]){
+                start = mid + 1;
+            }else{
+                ans = mid;
+                if(firstIndex){
+                    end = mid - 1;
+                }else{
+                    start = mid + 1;
+                }
+            }
+        }
+        return ans;
+    }            
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q6: https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/description/
+
+//Brute force approach Time Limit Exceeded 83 / 93 testcases passed
+// class Solution {
+//     public int minDays(int[] bloomDay, int m, int k) {
+//         int n = bloomDay.length;
+
+//         if(n < m * k){
+//             return -1;
+//         }
+
+//         int minDay = Integer.MAX_VALUE;
+//         int maxDay = Integer.MIN_VALUE;
+
+//         for(int day : bloomDay){
+//             minDay = Math.min(minDay, day);
+//             maxDay = Math.max(maxDay, day);
+//         }
+
+//         for(int day = minDay; day <= maxDay; day++){
+//             if(canMakeBouquets(bloomDay, day, m, k)){
+//                 return day;
+//             }
+//         }
+//         return -1;
+//     }
+
+//     static boolean canMakeBouquets(int[] bloomDay, int day, int m, int k){
+//         int bouquets = 0;
+//         int flowers = 0;
+
+//         for(int bloom : bloomDay){
+//             if(bloom <= day){
+//                 flowers++;
+//                 if(flowers == k){
+//                     bouquets++;
+//                     flowers = 0;
+//                 }
+//             }else{
+//                 flowers = 0;
+//             }
+//         }
+//         return bouquets >= m;
+//     }
+// }
+
+//Binary Approach
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        int n = bloomDay.length;
+
+        // If total flowers are less than required for m bouquets, return -1
+        if(n < m * k){
+            return -1;
+        }
+
+        int minDay = Integer.MAX_VALUE;
+        int maxDay = Integer.MIN_VALUE;
+
+        for(int day : bloomDay){
+            minDay = Math.min(minDay, day);
+            maxDay = Math.max(maxDay, day);
+        }
+
+        while(minDay < maxDay){
+            int mid = minDay + (maxDay - minDay) / 2;
+
+            if(canMakeBouquets(bloomDay, mid, m, k)){
+                maxDay = mid;
+            }else{
+                minDay = mid+1;
+            }
+        }
+        // Final check: Validate if the computed minDay is actually feasible
+        // After binary search, minDay is the smallest day that could potentially work.
+        // We need to confirm if minDay allows making the required number of bouquets.
+        // If canMakeBouquets returns true for minDay, it means minDay is valid.
+        // Otherwise, if minDay doesn't allow making the bouquets, return -1.
+        return canMakeBouquets(bloomDay, minDay, m, k) ? minDay : -1;
+    }
+
+    static boolean canMakeBouquets(int[] bloomDay, int day, int m, int k){
+        int bouquets = 0;
+        int flowers = 0;
+
+        // Traverse through bloomDay array to count valid bouquets
+        for(int bloom : bloomDay){
+            if(bloom <= day){
+                flowers++; // Flower can be used (has bloomed by 'day')
+                // If we have enough flowers to make one bouquet
+                if(flowers == k){
+                    bouquets++;  // Make one bouquet
+                    flowers = 0; // Reset flower count for next bouquet
+                }
+            }else{
+                // Flower hasn't bloomed by 'day', reset count
+                flowers = 0;
+            }
+        }
+        return bouquets >= m;
+    }
+}
+
