@@ -577,3 +577,118 @@ class Solution {
 // Left Partitions: [1, 3, 8] and [7]
 // Right Partitions: [] and [9, 10, 11]
 // Median: 8
+
+
+
+//___________________________________________________________________________________________________________________________
+// Q8: Problem Matrix Multiplication
+// Description:
+// Given two matrices, A of size m x n and B of size n x p, return the product matrix C of size m x p that results from multiplying A by B.
+// Matrix multiplication is only possible when the number of columns in the first matrix (A) is equal to the number of rows in the second matrix (B).
+// Therefore, the solution must first check if the matrices are compatible for multiplication. If they are not compatible, return an empty matrix or indicate an error.
+
+class solution{
+    public int[][] multiplyMatrix(int[][] A, int[][] B){
+        //validate if the multiplication is possible
+        int p = A.length;
+        int q = B.length;
+        int m = A[0].length;
+        int n = B[0].length;
+
+        int[][] finalMatrix = new int[p][n];
+
+        if(m != q){
+            return finalMatrix;
+        }
+
+        for(int i=0; i<p; i++){
+            for(int j=0; j<n; j++){
+                for(int k=0; k<m; k++){
+                    finalMatrix[i][j] = finalMatrix[i][j] + A[i][k] * B[k][j];
+                }
+            }
+        }
+
+        return finalMatrix;
+    }
+}
+
+// Input:
+// Matrix A:
+// 1  2  3
+// 4  5  6
+
+// Matrix B:
+// 7   8
+// 9  10
+// 11 12
+
+// Expected Output:
+// Matrix C (Result of A x B):
+// 58  64
+// 139 154
+
+// Explanation:
+// Step-by-step multiplication process:
+
+// 1. Multiply the first row of A with the first column of B:
+//    (1*7) + (2*9) + (3*11) = 7 + 18 + 33 = 58
+
+// 2. Multiply the first row of A with the second column of B:
+//    (1*8) + (2*10) + (3*12) = 8 + 20 + 36 = 64
+
+// 3. Multiply the second row of A with the first column of B:
+//    (4*7) + (5*9) + (6*11) = 28 + 45 + 66 = 139
+
+// 4. Multiply the second row of A with the second column of B:
+//    (4*8) + (5*10) + (6*12) = 32 + 50 + 72 = 154
+
+// Output Matrix:
+// 58  64
+// 139 154
+
+
+
+//___________________________________________________________________________________________________________________________
+Q9: https://leetcode.com/problems/diagonal-traverse/
+
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        List<Integer> result = new ArrayList<>();
+
+        for(int d = 0; d < m+n-1; d++){
+            if(d % 2 == 0){
+                int row = Math.min(d, m-1);  // Calculate starting row for this diagonal
+                int col = d - row; // Calculate starting column for this diagonal
+
+                // Even diagonal: go from bottom-left to top-right
+                while(row >= 0 && col < n){
+                    result.add(mat[row][col]);
+                    row--; // Move up
+                    col++; // Move right
+                }
+            }else{ // If the diagonal is odd
+                int col = Math.min(d, n-1);  // Calculate starting column for this diagonal
+                int row = d - col; // Calculate starting row for this diagonal
+
+                // Odd diagonal: go from top-right to bottom-left
+                while(row < m && col >= 0){
+                    result.add(mat[row][col]);
+                    row++; // Move down
+                    col--; // Move left
+                }
+            }
+        } 
+
+        // Convert the result list to an array
+        int[] output = new int[result.size()];
+        for(int i=0; i<result.size(); i++){
+            output[i] = result.get(i);
+        }
+
+        return output;
+    }
+}
