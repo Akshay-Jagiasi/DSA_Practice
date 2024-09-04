@@ -474,7 +474,7 @@ class Solution {
     }
 }
 
-//Visualization of the code do it on paper for more understanding more clearly
+//Visualization of the code do it on paper for understanding more clearly
 
 // nums1 = [1, 3, 8]
 // nums2 = [7, 9, 10, 11]
