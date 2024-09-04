@@ -359,3 +359,221 @@ class Solution {
     }
 }
 
+
+
+//___________________________________________________________________________________________________________________________
+Q7: https://leetcode.com/problems/median-of-two-sorted-arrays/
+
+// Runtime 1ms Beats 100.00%
+// TimeComplexity O(M+N)
+// class Solution {
+//     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        
+//         int[] finalArray = new int[nums1.length + nums2.length];
+        
+//         int i = 0, j = 0, finalIndex = 0;
+        
+           // Merge nums1 and nums2 into finalArray
+//         while(i<nums1.length &&  j<nums2.length){
+//             if(nums1[i] < nums2[j]){
+//                 finalArray[finalIndex++] = nums1[i];
+//                 i++;
+//             }else{
+//                 finalArray[finalIndex++] = nums2[j];
+//                 j++;
+//             }
+//         }
+
+           // If there are remaining elements in nums1
+//         while(i<nums1.length){
+//             finalArray[finalIndex++] = nums1[i];
+//             i++;
+//         }
+
+           // If there are remaining elements in nums2
+//         while(j<nums2.length){
+//             finalArray[finalIndex++] = nums2[j];
+//             j++;
+//         }
+
+//         int n = finalArray.length;
+//         int mid = n/2;
+
+//         if(n % 2 == 0){
+//             return (finalArray[mid-1] +finalArray[mid]) / 2.0;
+//         }else{
+//             return finalArray[mid];
+//         }
+//     }
+// }
+
+// Runtime 1ms Beats 100.00%
+//The overall run time complexity should be O(log (m+n)).
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        
+        //Ensure nums1 is the smaller array to minimize the binary search space 
+        if(nums1.length > nums2.length){
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
+        int m = nums1.length;
+        int n = nums2.length;
+
+        int low = 0;
+        int high = m; //end of the binary search range(size of nums1)
+
+        //perform binary search on the nums1
+        while(low <= high){
+            int px = low + (high-low) / 2; //partition index for nums1
+            int py = (m + n + 1) / 2 - px; //partition index for nums2
+
+            //get values around the partition for nums1
+            int x1 = Integer.MIN_VALUE; //Default for left partition when px is 0
+            int x3 = Integer.MAX_VALUE; //Default for right partition when px is at the end of nums1
+
+            if(px > 0){
+                x1 = nums1[px - 1]; //largest value on the left side of nums1 partition
+            }
+            if(px < m){
+                x3 = nums1[px]; //smallest value on the right side of nums1 partition
+            }
+
+            //Get values around the partition for nums2
+            int x2 = Integer.MIN_VALUE; //default for left partition when py is 0
+            int x4 = Integer.MAX_VALUE; //default for right partition when py is at the end of nums2
+            if(py > 0){
+                x2 = nums2[py - 1]; //Largest value on the left side of nums2 partition 
+            }
+            if(py < n){
+                x4 = nums2[py]; //smallest value on the right side of nums2 partition
+            }
+
+            if(x1 <= x4 && x2 <= x3){
+
+                //valid partition found
+                if((m + n) % 2 == 0){
+                    //If total length is even median is the avrage of max(left partition) and min(right partition)
+                    double leftMax = Math.max(x1, x2);
+                    double rightMin = Math.min(x3, x4);
+                    return (leftMax + rightMin) / 2.0;
+                }
+                //if the total length is odd, median is the maximum value on the left side of the partition
+                return Math.max(x1, x2);
+
+            }else if(x1 > x4){
+                //if the left value of nums1 is greater than the right value of the nums2, move the partition left 
+                high = px - 1; //Decrease the partition index of nums1
+
+            }else{
+                //if the left of the nums2 is greater than the right value of nums1, move the partition right
+                low = px + 1; //Increase the partition index of nums1
+            }
+        }
+        return -1;
+    }
+}
+
+//Visualization of the code do it on paper for more understanding more clearly
+
+// nums1 = [1, 3, 8]
+// nums2 = [7, 9, 10, 11]
+
+
+// Example 1: Initial Partitioning
+// Partition Indices:
+// Px = 1 (for nums1)
+// Py = (3 + 4 + 1) / 2 - Px = 4 - 1 = 3 (for nums2)
+
+// Partitions:
+// nums1 becomes:
+// Left Partition: [1]
+// Right Partition: [3, 8]
+
+// nums2 becomes:
+// Left Partition: [7, 9, 10]
+// Right Partition: [11]
+
+// Values around the Partition:
+// x1 = nums1[Px - 1] = nums1[0] = 1 (Largest value on the left side of nums1 partition)
+// x3 = nums1[Px] = nums1[1] = 3 (Smallest value on the right side of nums1 partition)
+// x2 = nums2[Py - 1] = nums2[2] = 10 (Largest value on the left side of nums2 partition)
+// x4 = nums2[Py] = nums2[3] = 11 (Smallest value on the right side of nums2 partition)
+
+// Check Validity:
+// x1 <= x4 → 1 <= 11 (True)
+// x2 <= x3 → 10 <= 3 (False)
+// Since x2 > x3, the partitions are not correct, so adjust the search bounds. We need to move to the right in nums1.
+
+
+// Example 2: Adjusted Partitioning
+
+// Partition Indices:
+// Px = 2 (for nums1)
+// Py = (3 + 4 + 1) / 2 - Px = 4 - 2 = 2 (for nums2)
+
+// Partitions:
+// nums1 becomes:
+// Left Partition: [1, 3]
+// Right Partition: [8]
+
+// nums2 becomes:
+// Left Partition: [7, 9]
+// Right Partition: [10, 11]
+
+// Values around the Partition:
+// x1 = nums1[Px - 1] = nums1[1] = 3 (Largest value on the left side of nums1 partition)
+// x3 = nums1[Px] = nums1[2] = 8 (Smallest value on the right side of nums1 partition)
+// x2 = nums2[Py - 1] = nums2[1] = 9 (Largest value on the left side of nums2 partition)
+// x4 = nums2[Py] = nums2[2] = 10 (Smallest value on the right side of nums2 partition)
+
+// Check Validity:
+// x1 <= x4 → 3 <= 10 (True)
+// x2 <= x3 → 9 <= 8 (False)
+// Since x2 > x3, the partitions are not correct, so adjust the search bounds. We need to move to the right in nums1.
+
+
+// Example 3: Final Partitioning
+// Partition Indices:
+// Px = 3 (for nums1)
+// Py = (3 + 4 + 1) / 2 - Px = 4 - 3 = 1 (for nums2)
+
+// Partitions:
+// nums1 becomes:
+// Left Partition: [1, 3, 8]
+// Right Partition: []
+
+// nums2 becomes:
+// Left Partition: [7]
+// Right Partition: [9, 10, 11]
+
+// Values around the Partition:
+// x1 = nums1[Px - 1] = nums1[2] = 8 (Largest value on the left side of nums1 partition)
+// x3 = Integer.MAX_VALUE (No right partition in nums1)
+// x2 = nums2[Py - 1] = nums2[0] = 7 (Largest value on the left side of nums2 partition)
+// x4 = nums2[Py] = nums2[1] = 9 (Smallest value on the right side of nums2 partition)
+
+// Check Validity:
+// x1 <= x4 → 8 <= 9 (True)
+// x2 <= x3 → 7 <= 8 (True)
+// Since both conditions are satisfied, we have found the correct partitions.
+
+// Calculate Median:
+// Combined length of arrays: 7 (odd)
+// Median is max(x1, x2) = max(8, 7) = 8
+
+// Summary
+// Initial Partition:
+// Left Partitions: [1] and [7, 9, 10]
+// Right Partitions: [3, 8] and [11]
+// Adjust Bounds: Move right in nums1.
+
+// Adjusted Partition:
+// Left Partitions: [1, 3] and [7, 9]
+// Right Partitions: [8] and [10, 11]
+
+// Adjust Bounds: Move right in nums1.
+// Final Partition:
+// Left Partitions: [1, 3, 8] and [7]
+// Right Partitions: [] and [9, 10, 11]
+// Median: 8
