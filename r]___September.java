@@ -692,3 +692,124 @@ class Solution {
         return output;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q10: https://leetcode.com/problems/spiral-matrix/description/
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> answer = new ArrayList<>();
+
+        if(matrix == null || matrix.length == 0){
+            return answer;
+        }
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int topBoundary = 0;
+        int rightBoundary = n-1;
+        int bottomBoundary = m-1;
+        int leftBoundary = 0;
+
+        while(topBoundary <= bottomBoundary && leftBoundary <= rightBoundary){
+            
+
+            //Traverse from left boundary to right along the current top boundary 
+            for(int i = leftBoundary; i <= rightBoundary; i++){
+                answer.add(matrix[topBoundary][i]);
+            }
+            topBoundary++; //Move the top boundary down 
+
+
+            //Traverse from top boundary to bottom along the current right boundary
+            for(int i = topBoundary; i <= bottomBoundary; i++){
+                answer.add(matrix[i][rightBoundary]);
+            }
+            rightBoundary--; //Move the right boundary left;
+
+
+            // Check if there are rows remaining to be processed
+            if(topBoundary <= bottomBoundary){
+                // Traverse from the right boundary to the left along the current bottom row
+                for(int i = rightBoundary; i >= leftBoundary; i--){
+                    answer.add(matrix[bottomBoundary][i]);
+                }
+                bottomBoundary--; //Move the bottom boundary up
+            }
+
+
+            // Check if there are columns remaining to be processed
+            if(leftBoundary <= rightBoundary){
+                // Traverse from the bottom boundary to the top along the current left column
+                for(int i = bottomBoundary; i >= topBoundary; i--){
+                    answer.add(matrix[i][leftBoundary]);
+                }
+                leftBoundary++; //Move the left boundary right
+            } 
+
+
+        }
+        return answer;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q11: https://leetcode.com/problems/spiral-matrix-ii/description/
+
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] matrix = new int[n][n];
+    
+
+        int topBoundary = 0;
+        int rightBoundary = n-1;
+        int bottomBoundary = n-1;
+        int leftBoundary = 0;
+        int nums = 1;
+
+        while(topBoundary <= bottomBoundary && leftBoundary <= rightBoundary){
+            
+
+            //Traverse from left boundary to right along the current top boundary 
+            for(int i = leftBoundary; i <= rightBoundary; i++){
+                matrix[topBoundary][i] = nums++;
+            }
+            topBoundary++; //Move the top boundary down 
+
+
+            //Traverse from top boundary to bottom along the current right boundary
+            for(int i = topBoundary; i <= bottomBoundary; i++){
+                matrix[i][rightBoundary] = nums++;
+            }
+            rightBoundary--; //Move the right boundary left;
+
+
+            // Check if there are rows remaining to be processed
+            if(topBoundary <= bottomBoundary){
+                // Traverse from the right boundary to the left along the current bottom row
+                for(int i = rightBoundary; i >= leftBoundary; i--){
+                    matrix[bottomBoundary][i] = nums++;
+                }
+                bottomBoundary--; //Move the bottom boundary up
+            }
+
+
+            // Check if there are columns remaining to be processed
+            if(leftBoundary <= rightBoundary){
+                // Traverse from the bottom boundary to the top along the current left column
+                for(int i = bottomBoundary; i >= topBoundary; i--){
+                    matrix[i][leftBoundary] = nums++;
+                }
+                leftBoundary++; //Move the left boundary right
+            } 
+
+
+        }
+        return matrix;
+    }
+}
