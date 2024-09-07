@@ -813,3 +813,131 @@ class Solution {
         return matrix;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q12: https://leetcode.com/problems/spiral-matrix-iii/description/
+
+class Solution {
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        
+        //Result array to store the coordinates of cells visited in spiral order
+        //size is rows*cols because we need to visit every cell once
+        int[][] result = new int[rows * cols][2];
+
+        //Directions array to define the movement in spiral order
+        //{0, 1} -> Move East (Right)
+        //{1, 0} -> Move South (Down)
+        //{0, -1} -> Move West (Left)
+        //{-1, 0} -> Move North (Up)
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        //Variable to control the number of steps to move in each direction
+        //Start with 1 step and it will increment after every two turns 
+        int steps = 1;
+
+        //Index to keep track of the next position in the result array to fill
+        int index = 0;
+
+        //Variable to track which direction to move next; start with 0, which means "East"
+        int directionIndex = 0;
+
+        //Set the starting point the result array as the initial position(rStart, cStart)
+        result[index++] = new int[]{rStart, cStart};
+
+        //continue filling the result array until we have visited all cells
+        while(index < rows * cols){
+
+            //Each pair of direction (East + South and West + North) requires us to change the direction
+            //Hence, we use a loop that iterated twice to handle two direction changes
+            for(int d = 0; d < 2; d++){
+
+                //Get the current direction's movements (dx, dy)
+                int dx = directions[directionIndex][0];
+                int dy = directions[directionIndex][1];
+
+                //Move 'steps' times in the current direction
+                for(int step = 0; step < steps; step++){
+
+                    //Update the current position by adding the direction
+                    rStart = rStart + dx;
+                    cStart = cStart + dy;
+
+                    //check if the new position is within the grid's boundaries 
+                    if(rStart >= 0 && rStart < rows && cStart >= 0 && cStart < cols){
+                        //If within boundaries add the position to the result array
+                        result[index++] = new int[] {rStart, cStart};
+                    }
+                }
+
+                //Update the direction to the next one in clockwise order (East -> South -> West -> North)
+                // '% 4' ensures the directionIndex wraps around to 0 after reaching 3
+                directionIndex = (directionIndex + 1) % 4; 
+            }
+
+            //After each full set of two moves 
+            steps++;
+        }
+
+        return result;
+    }
+}
+
+
+// Dry Run of Spiral Matrix III for a 4x4 grid starting at (1, 1)
+
+// Initial Setup:
+// Grid:
+// [ (0, 0), (0, 1), (0, 2), (0, 3) ]
+// [ (1, 0), (1, 1), (1, 2), (1, 3) ]
+// [ (2, 0), (2, 1), (2, 2), (2, 3) ]
+// [ (3, 0), (3, 1), (3, 2), (3, 3) ]
+// Start at (1, 1)
+// Result: [[1, 1], ...]  // Starting point added
+
+// Iteration 1: Moving 1 Step East and 1 Step South
+// steps = 1
+// Move East (right) 1 step:
+// (rStart, cStart) = (1, 1) + (0, 1) = (1, 2)
+// Result: [[1, 1], [1, 2], ...]
+// Move South (down) 1 step:
+// (rStart, cStart) = (1, 2) + (1, 0) = (2, 2)
+// Result: [[1, 1], [1, 2], [2, 2], ...]
+// Increase steps to 2
+
+// Iteration 2: Moving 2 Steps West and 2 Steps North
+// steps = 2
+// Move West (left) 2 steps:
+// (rStart, cStart) = (2, 2) + (0, -1) = (2, 1)
+// (rStart, cStart) = (2, 1) + (0, -1) = (2, 0)
+// Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], ...]
+// Move North (up) 2 steps:
+// (rStart, cStart) = (2, 0) + (-1, 0) = (1, 0)
+// (rStart, cStart) = (1, 0) + (-1, 0) = (0, 0)
+// Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0], ...]
+// Increase steps to 3
+
+// Iteration 3: Moving 3 Steps East and 3 Steps South
+// steps = 3
+// Move East (right) 3 steps:
+// (rStart, cStart) = (0, 0) + (0, 1) = (0, 1)
+// (rStart, cStart) = (0, 1) + (0, 1) = (0, 2)
+// (rStart, cStart) = (0, 2) + (0, 1) = (0, 3)
+// Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3], ...]
+// Move South (down) 3 steps:
+// (rStart, cStart) = (0, 3) + (1, 0) = (1, 3)
+// (rStart, cStart) = (1, 3) + (1, 0) = (2, 3)
+// (rStart, cStart) = (2, 3) + (1, 0) = (3, 3)
+// Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [2, 3], [3, 3], ...]
+// Increase steps to 4
+
+// Iteration 4: Moving 4 Steps West and 4 Steps North
+// steps = 4
+// Move West (left) 4 steps:
+// (rStart, cStart) = (3, 3) + (0, -1) = (3, 2)
+// (rStart, cStart) = (3, 2) + (0, -1) = (3, 1)
+// (rStart, cStart) = (3, 1) + (0, -1) = (3, 0)
+// (rStart, cStart) = (3, 0) + (0, -1) = (3, -1) (Out of bounds, do not add)
+// Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [2, 3], [3, 3], [3, 2], [3, 1], [3, 0]]
+// At this point, all cells in the 4 x 4 grid have been visited in spiral order.
