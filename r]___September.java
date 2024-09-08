@@ -941,3 +941,73 @@ class Solution {
 // (rStart, cStart) = (3, 0) + (0, -1) = (3, -1) (Out of bounds, do not add)
 // Result: [[1, 1], [1, 2], [2, 2], [2, 1], [2, 0], [1, 0], [0, 0], [0, 1], [0, 2], [0, 3], [1, 3], [2, 3], [3, 3], [3, 2], [3, 1], [3, 0]]
 // At this point, all cells in the 4 x 4 grid have been visited in spiral order.
+
+
+
+//___________________________________________________________________________________________________________________________
+Q13: https://leetcode.com/problems/spiral-matrix-iv/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[][] spiralMatrix(int m, int n, ListNode head) {
+        
+        //Initialize the matrix with -1 values
+        // This is to fill the remaining spaces when the linked list is exhausted
+        int[][] matrix = new int[m][n];
+        for(int[] row : matrix){
+            Arrays.fill(row, -1); //Fill each row with -1
+        } 
+
+        //Define the initial boundaries for the spiral traversal
+        int top = 0; //Top Boundary, start at the first row
+        int bottom = m-1; //Bottom Boundary, start at the last row
+        int left = 0; //Left Boundary, start at the first column
+        int right = n-1; //Right Boundary, start as the last column
+
+        //start with the head of the linked list
+        ListNode current = head;
+
+        //Continue filling the matrix until the linked list is exhausted or the matrix is filled
+        while(current != null){
+            
+            //Traverse from left to right on the current top row 
+            for(int i = left; i <= right && current != null; i++){
+                matrix[top][i] = current.val;
+                current = current.next;
+            }
+            top++; //After filling the top row, move the top boundary down
+
+            //Traverse from top to bottom on the current right column
+            for(int i = top; i <= bottom && current != null; i++){
+                matrix[i][right] = current.val;
+                current = current.next;
+            }
+            right--; //After filling right column, move the right boundary left
+
+            //Traverse from right to left on the current bottom row
+            for(int i = right; i >= left && current != null; i--){
+                matrix[bottom][i] = current.val;
+                current = current.next;
+            }
+            bottom--; //After filling the bottom row, move the bottom boundary up
+
+            //Traverse from bottom to top on the current left column
+            for(int i = bottom; i >= top && current != null; i--){
+                matrix[i][left] = current.val;
+                current = current.next;
+            }
+            left++; //After filling the left col, move the left boundary right
+        }
+
+        return matrix;
+    }
+}
