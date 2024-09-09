@@ -1077,3 +1077,49 @@ class Solution {
         return false;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q15: https://leetcode.com/problems/sum-in-a-matrix/
+
+class Solution {
+    public int matrixSum(int[][] nums) {
+
+        int n = nums.length;
+        int m = nums[0].length;
+
+        int score = 0; 
+
+        //first sort each row 
+        for(int[] row : nums){
+            Arrays.sort(row);  // Sort row in ascending order
+            reverse(row); // Reverse row to make it descending
+        }
+
+        // Then, compute the score by finding the max in each column
+        for(int i = 0; i < m; i++){  // iterate over columns
+            int maxInThisRound = 0;
+
+            for(int j = 0; j < n; j++){  // iterate over rows
+                maxInThisRound = Math.max(maxInThisRound, nums[j][i]); // find max in column
+            }
+
+            score += maxInThisRound;  // add max value of this column to the score
+        }
+
+        return score;
+    }
+
+    static void reverse(int[] row){
+        int i = 0;
+        int j = row.length-1;
+        while(i < j){
+            int temp = row[i];
+            row[i] = row[j];
+            row[j] = temp;
+            i++;
+            j--;
+        }
+    }
+}
