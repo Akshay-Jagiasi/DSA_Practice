@@ -1011,3 +1011,69 @@ class Solution {
         return matrix;
     }
 }
+
+
+//___________________________________________________________________________________________________________________________
+Q14: https://leetcode.com/problems/search-a-2d-matrix/description/
+
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+
+        //check if the matrix is null or empty, return false if it is 
+        if(matrix == null || matrix.length == 0){
+            return false; 
+        }
+
+        int start, end, mid;
+        int flag;
+
+        start = 0;
+        end = matrix.length - 1;
+
+        while(start + 1 < end){ // Continue until only two rows are left
+            mid = start + (end - start) / 2;
+            if(target == matrix[mid][0]){
+                return true;
+            }else if(target < matrix[mid][0]){ //if target element is less than the first element of the middle row 
+                end = mid; //Move the end pointer to mid( target must be in the upper half)
+            }else{ //If target is greater than the first element of the middle row 
+                start = mid; //Move the start pointer to mid (look in the lower half)
+            }
+        }
+
+        //After the loop, start and end point to adjacent rows
+        //check which row to search
+        if(target == matrix[start][0]){
+            return true;
+        }else if(target == matrix[end][0]){
+            return true;
+        }else if(target > matrix[start][0] && target < matrix[end][0]){ //if target is greater than the 0th element
+                                                                        //of the start row and less than 0th element of the end row 
+            flag = start; // target must be in the start row 
+        }else{
+            flag = end; //target must be in the end row 
+        }
+
+        //perform binray search in the identified row (flag)
+        start = 0;
+        end = matrix[flag].length - 1;
+
+        while(start + 1 < end){ 
+            mid = start + (end - start) / 2;
+            if(target == matrix[flag][mid]){
+                return true; //target found in the row
+            }else if(target < matrix[flag][mid]){
+                end = mid;
+            }else{
+                start = mid;
+            }
+        }
+
+        //check the final two positions in the row 
+        if(target == matrix[flag][start] || target == matrix[flag][end]){
+            return true;
+        }
+
+        return false;
+    }
+}
