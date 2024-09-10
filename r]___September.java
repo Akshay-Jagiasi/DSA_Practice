@@ -1550,3 +1550,75 @@ class Solution {
 
 
 //___________________________________________________________________________________________________________________________
+Q21: https://leetcode.com/problems/modify-the-matrix/description/
+
+//Time Complexity: O(n×m^2) in the worst case.
+//For each element in the matrix, when it encounters -1,
+//it starts a new loop to find the maximum value in the column below
+
+// class Solution {
+//     public int[][] modifiedMatrix(int[][] matrix) {
+        
+//         int n = matrix.length;
+//         int m = matrix[0].length;
+
+//         for(int i = 0; i < n; i++){
+//             for(int j = 0; j < m; j++){
+               
+//                 if(matrix[i][j] == -1){
+                    
+//                     int maxElement = 0;
+                    
+//                     for(int k = i; k < n; k++){
+//                         int currentElement = matrix[i][j];
+//                         maxElement = Math.max(maxElement, matrix[k][j]);
+//                     }
+                    
+//                     matrix[i][j] = maxElement;
+//                 }
+//             }
+//         }
+
+//         return matrix;
+//     }
+// }
+
+
+
+// Compute maximum values for each column by traversing from the bottom to the top and store them in maxBelow
+// Replace -1 values in the matrix with the corresponding precomputed maximum from maxBelow
+// Time Complexity: O(n×m)
+
+class Solution {
+    public int[][] modifiedMatrix(int[][] matrix) {
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int[] maxBelow = new int[m];
+
+        // Fill maxBelow with the maximum values of each column
+        for(int j = 0; j < m; j++){
+            int max = Integer.MIN_VALUE;
+            for(int i = n-1; i >= 0; i--){
+                max = Math.max(max, matrix[i][j]);
+                maxBelow[j] = max;
+            }
+        }
+
+        //Update -1 in the matrix with the maximum values from maxBelow
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(matrix[i][j] == -1){
+                    matrix[i][j] = maxBelow[j];
+                }
+            }
+        }
+
+        return matrix;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
