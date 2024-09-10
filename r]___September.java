@@ -1246,3 +1246,201 @@ class Solution {
 // -------------------
 
 // The final result array is [1, 4, 2, 7, 5, 3, 8, 6, 9]
+
+
+
+//___________________________________________________________________________________________________________________________
+Q17: https://leetcode.com/problems/prime-in-diagonal/description/
+
+class Solution {
+    public int diagonalPrime(int[][] nums) {
+        
+        int n = nums.length;
+        int maxPrime = 0;
+
+        int number = 0;
+        boolean check = false;
+
+        for(int i = 0; i < n; i++){
+            
+            number = nums[i][i];
+            if(isPrime(number)){
+                maxPrime = Math.max(maxPrime, number);    
+            }
+
+            number = nums[i][n - i- 1];
+            if(isPrime(number)){
+                maxPrime = Math.max(maxPrime, number);
+            }
+        }
+
+        return maxPrime;
+    }
+
+    static boolean isPrime(int number){
+        if(number < 2){
+            return false;
+        }
+
+        for(int i = 2; i <= Math.sqrt(number); i++){
+            if(number % i == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q18: https://leetcode.com/problems/sort-the-matrix-diagonally/description/
+
+class Solution {
+    public int[][] diagonalSort(int[][] mat) {
+        
+        int n = mat.length;
+        int m = mat[0].length;
+
+        //sort all diagonals STARTING from each element in the first column 
+        //These diagonals start from positions (i, 0) where i ranges from 0 to n-1
+        for(int i = 0; i < n; i++){
+            sortDiagonal(mat, i, 0);
+        }   
+
+        //sort all diagonals STARTING from each element in the first row
+        //These diagonals start from positions (0, j) where j ranges from 0 to m-1
+        //Note: start from j=1 to avoid the diagonal starting at (0, 0) again
+        for(int i = 1; i < m; i++){
+            sortDiagonal(mat, 0, i);
+        }
+
+        return mat;
+    }
+
+    //Helper function
+    private void sortDiagonal(int mat[][], int row, int col){
+
+        int n = mat.length;
+        int m = mat[0].length;
+
+        //List to store elements of the diagonal
+        List<Integer> list = new ArrayList<>();
+        
+        int r = row, c = col;
+
+        //collect all elements of the current diagonal into the list 
+        while(r < n && c < m){
+            list.add(mat[r][c]);
+            r++;
+            c++;
+        }
+
+        //sort the collected diagonal elements
+        Collections.sort(list);
+
+        r = row; //reset row
+        c = col; //reset col
+        int index = 0;
+        
+        while(r < n && c < m){
+            //Replace the element in the matrix with the sorted value
+            mat[r][c] = list.get(index);
+            r++;
+            c++;
+            index++;
+        }
+    } 
+}
+
+ // Initial matrix:
+        // [
+        //   [3, 3, 1, 1],
+        //   [2, 2, 1, 2],
+        //   [1, 1, 1, 2]
+        // ]
+
+    // Sorting diagonal starting from (0, 0):
+        // Collected elements from diagonal (0,0): [3, 2, 1]
+        // After sorting: [1, 2, 3]
+        // Placing back sorted elements:
+        // (0,0) -> 1
+        // (1,1) -> 2
+        // (2,2) -> 3
+
+        // Updated Matrix:
+        // [
+        //   [1, 3, 1, 1],
+        //   [2, 2, 1, 2],
+        //   [1, 1, 3, 2]
+        // ]
+
+    // Sorting diagonal starting from (1, 0):
+        // Collected elements from diagonal (1,0): [2, 1]
+        // After sorting: [1, 2]
+        // Placing back sorted elements:
+        // (1,0) -> 1
+        // (2,1) -> 2
+        // Updated Matrix:
+        // [
+        //   [1, 3, 1, 1],
+        //   [1, 2, 1, 2],
+        //   [1, 2, 3, 2]
+        // ]
+
+    // Sorting diagonal starting from (2, 0):
+        // Collected elements from diagonal (2,0): [1]
+        // After sorting: [1] (already sorted)
+        // Placing back sorted elements:
+        // (2,0) remains 1
+        // Updated Matrix remains unchanged:
+        // [
+        //   [1, 3, 1, 1],
+        //   [1, 2, 1, 2],
+        //   [1, 2, 3, 2]
+        // ]
+
+    // Sorting diagonal starting from (0, 1):
+        // Collected elements from diagonal (0,1): [3, 1]
+        // After sorting: [1, 3]
+        // Placing back sorted elements:
+        // (0,1) -> 1
+        // (1,2) -> 3
+        // Updated Matrix:
+        // [
+        //   [1, 1, 1, 1],
+        //   [1, 2, 3, 2],
+        //   [1, 2, 3, 2]
+        // ]
+
+    // Sorting diagonal starting from (0, 2):
+        // Collected elements from diagonal (0,2): [1, 2]
+        // After sorting: [1, 2] (already sorted)
+        // Placing back sorted elements:
+        // (0,2) remains 1
+        // (1,3) remains 2
+        // Updated Matrix remains unchanged:
+        // [
+        //   [1, 1, 1, 1],
+        //   [1, 2, 3, 2],
+        //   [1, 2, 3, 2]
+        // ]
+
+    // Sorting diagonal starting from (0, 3):
+        // Collected elements from diagonal (0,3): [1]
+        // After sorting: [1] (already sorted)
+        // Placing back sorted elements:
+        // (0,3) remains 1
+        // Updated Matrix remains unchanged:
+        // [
+        //   [1, 1, 1, 1],
+        //   [1, 2, 3, 2],
+        //   [1, 2, 3, 2]
+        // ]
+
+// Final Output:
+        // [
+        //   [1, 1, 1, 1],
+        //   [1, 2, 2, 2],
+        //   [1, 2, 3, 3]
+        // ]
