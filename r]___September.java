@@ -1444,3 +1444,37 @@ class Solution {
         //   [1, 2, 2, 2],
         //   [1, 2, 3, 3]
         // ]
+
+
+
+//___________________________________________________________________________________________________________________________
+Q19: https://leetcode.com/problems/maximum-area-of-longest-diagonal-rectangle/description/
+
+class Solution {
+    public int areaOfMaxDiagonal(int[][] dimensions) {
+        
+        int n = dimensions.length;
+        double maxSquareRoot = 0;
+        int maxArea = 0;
+
+        for(int i = 0; i < n; i++){
+            int a = dimensions[i][0];
+            int b = dimensions[i][1];
+            double squareRoot = Math.sqrt(a * a + b * b); 
+
+            if(squareRoot > maxSquareRoot){
+                maxSquareRoot = squareRoot;
+                maxArea = a * b;
+            }else if(squareRoot == maxSquareRoot){
+                //if the squareRoot is the same as the current maxSquareRoot, update the maxArea if needed
+                maxArea = Math.max(maxArea, a * b);
+            }           
+        }
+
+        return maxArea;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
