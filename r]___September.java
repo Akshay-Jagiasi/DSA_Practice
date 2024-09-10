@@ -1478,3 +1478,74 @@ class Solution {
 
 
 //___________________________________________________________________________________________________________________________
+Q20: https://leetcode.com/problems/toeplitz-matrix/description/
+
+// Based on a previous matrix problem, this initial approach was derived by checking each diagonal independently. 
+
+// class Solution {
+//     public boolean isToeplitzMatrix(int[][] matrix) {
+        
+//         int n = matrix.length;
+//         int m = matrix[0].length;
+
+//         for(int i = 0; i < n; i++){
+//             if( !check(matrix, i, 0)){
+//                 return false;
+//             }
+//         }
+
+//         for(int i = 1; i < m; i++){
+//             if( !check(matrix, 0, i)){
+//                 return false;
+//             } 
+//         }
+
+//         return true;
+//     }
+
+//     private boolean check(int[][] matrix, int row, int col){
+        
+//         int n = matrix.length;
+//         int m = matrix[0].length;
+
+//         int r = row, c = col;
+//         int temp = matrix[r][c];
+
+//         boolean ans = true;
+
+//         while(r < n && c < m){
+//             if(matrix[r][c] != temp){
+//                 return false;
+//             }
+//             r++;
+//             c++;
+//         }
+
+//         return true;
+//     }
+// }
+
+// However, upon further review, the solution was optimized to a more readable and efficient version 
+// by directly comparing each element with its diagonal neighbor.
+
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        for(int i = 0; i < n-1; i++){
+            for(int j = 0; j < m-1; j++){
+                if(matrix[i][j] != matrix[i+1][j+1]){
+                    return false;
+                }
+            }
+        }  
+
+        return true; 
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
