@@ -1480,7 +1480,8 @@ class Solution {
 //___________________________________________________________________________________________________________________________
 Q20: https://leetcode.com/problems/toeplitz-matrix/description/
 
-// Based on a previous matrix problem, this initial approach was derived by checking each diagonal independently. 
+// Based on a previous matrix problem( https://leetcode.com/problems/sort-the-matrix-diagonally/description/ )
+// this initial approach was derived by checking each diagonal independently. 
 
 // class Solution {
 //     public boolean isToeplitzMatrix(int[][] matrix) {
