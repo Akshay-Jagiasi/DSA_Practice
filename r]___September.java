@@ -1123,3 +1123,126 @@ class Solution {
         }
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q16: https://leetcode.com/problems/diagonal-traverse-ii/description/
+
+class Solution {
+    public int[] findDiagonalOrder(List<List<Integer>> nums) {
+        
+        //Map to store elements grouped by their diagonals
+        Map<Integer, List<Integer>> diagonals = new HashMap<>();
+
+        //Track the maximum diagonal index to iterate through later
+        int maxDiagonal = 0;
+        int totalElements = 0;
+
+        //Traverse the matrix to populate the diagonals map
+        for(int i = 0; i < nums.size(); i++){
+            for(int j = 0; j < nums.get(i).size(); j++){
+
+                int diagonalKey = i + j;
+
+                //If the diagonal doesn't exist in the map, create a new list for it
+                diagonals.putIfAbsent(diagonalKey, new ArrayList<>());
+
+                //Add the element to the corresponding diagonal list
+                diagonals.get(diagonalKey).add(nums.get(i).get(j));
+
+                //Update the maximum diagonal index
+                maxDiagonal = Math.max(maxDiagonal, diagonalKey);
+                totalElements++;
+            }
+        }
+
+        //Array to store the final diagonal order traversal 
+        int[] result = new int[totalElements];
+        int index = 0; //Index for result array
+
+        //Traverse diagonals from 0 to maxDiagonal
+        for(int k = 0; k <= maxDiagonal; k++){
+            if(diagonals.containsKey(k)){
+
+                //retrieve the diagonal list
+                List<Integer> diagonalElements = diagonals.get(k);
+
+                //reverse the list to maintain bottom-up order and add to result array 
+                for(int i = diagonalElements.size() - 1; i >= 0; i--){
+                    result[index++] = diagonalElements.get(i);
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+
+// Dry Run of code with Example Matrix:
+// nums = [
+//     [1, 2, 3],
+//     [4, 5, 6],
+//     [7, 8, 9]
+// ]
+
+// -- First Row (i = 0): --
+// j = 0: diagonalKey = 0 + 0 = 0
+// diagonals becomes {0: [1]}
+// maxDiagonal becomes 0
+// totalElements becomes 1
+
+// j = 1: diagonalKey = 0 + 1 = 1
+// diagonals becomes {0: [1], 1: [2]}
+// maxDiagonal becomes 1
+// totalElements becomes 2
+
+// j = 2: diagonalKey = 0 + 2 = 2
+// diagonals becomes {0: [1], 1: [2], 2: [3]}
+// maxDiagonal becomes 2
+// totalElements becomes 3
+
+// -- Second Row (i = 1): --
+// j = 0: diagonalKey = 1 + 0 = 1
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3]}
+// totalElements becomes 4
+
+// j = 1: diagonalKey = 1 + 1 = 2
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3, 5]}
+// totalElements becomes 5
+
+// j = 2: diagonalKey = 1 + 2 = 3
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3, 5], 3: [6]}
+// maxDiagonal becomes 3
+// totalElements becomes 6
+
+// -- Third Row (i = 2): --
+// j = 0: diagonalKey = 2 + 0 = 2
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3, 5, 7], 3: [6]}
+// totalElements becomes 7
+
+// j = 1: diagonalKey = 2 + 1 = 3
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3, 5, 7], 3: [6, 8]}
+// totalElements becomes 8
+
+// j = 2: diagonalKey = 2 + 2 = 4
+// diagonals becomes {0: [1], 1: [2, 4], 2: [3, 5, 7], 3: [6, 8], 4: [9]}
+// maxDiagonal becomes 4
+// totalElements becomes 9
+
+// -- At the end of this step: --
+// diagonals looks like:
+// {0: [1], 1: [2, 4], 2: [3, 5, 7], 3: [6, 8], 4: [9]}
+// maxDiagonal = 4
+// totalElements = 9
+// -------------------
+
+// Diagonal 0 (k = 0): [1] -> result: [1, 0, 0, 0, 0, 0, 0, 0, 0], index: 1
+// Diagonal 1 (k = 1): [2, 4] -> result: [1, 4, 2, 0, 0, 0, 0, 0, 0], index: 3
+// Diagonal 2 (k = 2): [3, 5, 7] -> result: [1, 4, 2, 7, 5, 3, 0, 0, 0], index: 6
+// Diagonal 3 (k = 3): [6, 8] -> result: [1, 4, 2, 7, 5, 3, 8, 6, 0], index: 8
+// Diagonal 4 (k = 4): [9] -> result: [1, 4, 2, 7, 5, 3, 8, 6, 9], index: 9
+// -------------------
+
+// The final result array is [1, 4, 2, 7, 5, 3, 8, 6, 9]
