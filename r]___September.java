@@ -1622,3 +1622,55 @@ class Solution {
 
 
 //___________________________________________________________________________________________________________________________
+Q22: https://leetcode.com/problems/check-if-matrix-is-x-matrix/description/
+
+class Solution {
+    public boolean checkXMatrix(int[][] grid) {
+        
+        return (diagonals(grid) && checkZeros(grid));
+    }
+
+    private static boolean diagonals(int[][] grid){
+        
+        int n = grid.length;
+
+        for(int i = 0; i < n; i++){
+            
+            //check the primary diagonal(from top left to bottom right)
+            if(grid[i][i] == 0){
+                return false;
+            }
+
+            //check the secondary diagonal(from top right to bottom left)
+            if(grid[i][n - i - 1] == 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean checkZeros(int[][] grid){
+
+        int n = grid.length;
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+
+                //skip the diagonals
+                if(i == j || i+j == n-1){
+                    continue;
+                }
+
+                //for non diagonal elements check if they are all zeros
+                if(grid[i][j] != 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
