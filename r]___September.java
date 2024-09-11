@@ -1674,3 +1674,179 @@ class Solution {
 
 
 //___________________________________________________________________________________________________________________________
+Q23: https://leetcode.com/problems/lucky-numbers-in-a-matrix/description/
+
+// TimeComplexity: O(rows * cols * (rows + cols))
+// class Solution {
+//     public List<Integer> luckyNumbers(int[][] matrix) {
+//         List<Integer> result = new ArrayList<>();
+
+//         for (int i=0; i<matrix.length; i++) {
+//             for (int j=0; j < matrix[i].length; j++) {
+//                 int currentNumber = matrix[i][j];
+
+                   // Check if the current number is the minimum in its row
+//                 boolean isMinInRow = true;
+//                 for (int k=0; k<matrix[i].length; k++) {
+//                     if (matrix[i][k] < currentNumber) {
+//                         isMinInRow = false;
+//                         break;
+//                     }
+//                 }
+                   // Check if the current number is the maximum in its column
+//                 boolean isMaxInCol = true;
+//                 for (int k=0; k<matrix.length; k++) {
+//                     if (matrix[k][j] > currentNumber) {
+//                         isMaxInCol = false;
+//                         break;
+//                     }
+//                 }
+                   // If the current number is both the minimum in its row and the maximum in its column, add it to the result
+//                 if (isMinInRow && isMaxInCol) {
+//                     result.add(currentNumber);
+//                 }
+//             }
+//         }
+//         return result;
+//     }
+// }
+
+//Time Complexity: O(rows * cols)
+class Solution {
+    public List<Integer> luckyNumbers(int[][] matrix) {
+        List<Integer> result = new ArrayList<>();
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        //find the minimum in each row
+        int[] minRow = new int[rows];
+        for(int i = 0; i < rows; i++){
+            int min = matrix[i][0];
+            for(int j = 1; j < cols; j++){
+                if(matrix[i][j] < min){
+                    min = matrix[i][j];
+                }
+            }
+            minRow[i] = min;
+        }
+
+        //find the maximum in each cpl
+        int[] maxCol = new int[cols];
+        for(int j = 0; j < cols; j++){
+            int max = matrix[0][j];
+            for(int i = 1; i < rows; i++){
+                if(matrix[i][j] > max){
+                    max = matrix[i][j];
+                }
+            }
+            maxCol[j] = max;
+        }
+
+        //check for lucky number
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                if(matrix[i][j] == minRow[i] && matrix[i][j] == maxCol[j]){
+                    result.add(matrix[i][j]);
+                }
+            }
+        }
+        return result;
+    }
+}
+
+//matrix = [
+//   [3, 7, 8],
+//   [9, 11, 13],
+//   [15, 16, 17]
+// ]
+
+// Step-by-Step Dry Run:
+
+
+// Step 1: Find the Minimum in Each Row
+// Initialize minRow array: minRow = [0, 0, 0]
+// Calculate minimum for each row:
+
+// For row 0 (values: [3, 7, 8]):
+// min = matrix[0][0] = 3
+// Compare matrix[0][1] = 7 with min = 3 → No change
+// Compare matrix[0][2] = 8 with min = 3 → No change
+// minRow[0] = 3
+
+// For row 1 (values: [9, 11, 13]):
+// min = matrix[1][0] = 9
+// Compare matrix[1][1] = 11 with min = 9 → No change
+// Compare matrix[1][2] = 13 with min = 9 → No change
+// minRow[1] = 9
+
+// For row 2 (values: [15, 16, 17]):
+// min = matrix[2][0] = 15
+// Compare matrix[2][1] = 16 with min = 15 → No change
+// Compare matrix[2][2] = 17 with min = 15 → No change
+// minRow[2] = 15
+
+// Result after Step 1: minRow = [3, 9, 15]
+
+
+// Step 2: Find the Maximum in Each Column
+// Initialize maxCol array: maxCol = [0, 0, 0]
+// Calculate maximum for each column:
+
+// For column 0 (values: [3, 9, 15]):
+// max = matrix[0][0] = 3
+// Compare matrix[1][0] = 9 with max = 3 → max = 9
+// Compare matrix[2][0] = 15 with max = 9 → max = 15
+// maxCol[0] = 15
+
+// For column 1 (values: [7, 11, 16]):
+// max = matrix[0][1] = 7
+// Compare matrix[1][1] = 11 with max = 7 → max = 11
+// Compare matrix[2][1] = 16 with max = 11 → max = 16
+// maxCol[1] = 16
+
+// For column 2 (values: [8, 13, 17]):
+// max = matrix[0][2] = 8
+// Compare matrix[1][2] = 13 with max = 8 → max = 13
+// Compare matrix[2][2] = 17 with max = 13 → max = 17
+// maxCol[2] = 17
+
+// Result after Step 2: maxCol = [15, 16, 17]
+
+
+// Step 3: Check for Lucky Numbers
+// Initialize result list: result = []
+// Check each element of the matrix:
+
+// For row 0:
+// For column 0: matrix[0][0] = 3
+// matrix[0][0] == minRow[0] (3 == 3) and matrix[0][0] == maxCol[0] (3 != 15) → Not a lucky number
+
+// For column 1: matrix[0][1] = 7
+// matrix[0][1] == minRow[0] (7 != 3) → Not a lucky number
+
+// For column 2: matrix[0][2] = 8
+// matrix[0][2] == minRow[0] (8 != 3) → Not a lucky number
+
+// For row 1:
+// For column 0: matrix[1][0] = 9
+// matrix[1][0] == minRow[1] (9 == 9) and matrix[1][0] == maxCol[0] (9 != 15) → Not a lucky number
+
+// For column 1: matrix[1][1] = 11
+// matrix[1][1] == minRow[1] (11 != 9) → Not a lucky number
+
+// For column 2: matrix[1][2] = 13
+// matrix[1][2] == minRow[1] (13 != 9) → Not a lucky number
+
+// For row 2:
+// For column 0: matrix[2][0] = 15
+// matrix[2][0] == minRow[2] (15 == 15) and matrix[2][0] == maxCol[0] (15 == 15) → Lucky number found
+// Add 15 to result: result = [15]
+
+// For column 1: matrix[2][1] = 16
+// matrix[2][1] == minRow[2] (16 != 15) → Not a lucky number
+
+// For column 2: matrix[2][2] = 17
+// matrix[2][2] == minRow[2] (17 != 15) → Not a lucky number
+
+// Result after Step 3: result = [15]
