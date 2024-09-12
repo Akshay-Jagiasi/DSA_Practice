@@ -1850,3 +1850,277 @@ class Solution {
 // matrix[2][2] == minRow[2] (17 != 15) → Not a lucky number
 
 // Result after Step 3: result = [15]
+
+
+
+//___________________________________________________________________________________________________________________________
+Q24: https://leetcode.com/problems/fibonacci-number/description/
+
+class Solution {
+    public int fib(int n) {
+        if(n <= 1){
+            return n;
+        }
+
+        return fib(n-1) + fib(n-2);
+    }
+}
+
+
+//___________________________________________________________________________________________________________________________
+Q25: https://leetcode.com/problems/n-th-tribonacci-number/description/
+
+// class Solution {
+//     public int tribonacci(int n) {
+//        if(n == 0) return 0;
+//        if(n == 1 || n == 2) return 1;
+        
+//        return tribonacci(n - 1) + tribonacci(n - 2) + tribonacci(n - 3);
+//     }
+// }
+
+
+class Solution {
+    public int tribonacci(int n) {
+        if(n == 0) return 0;
+        if(n == 1 || n == 2) return 1;
+        
+        int a=0, b=1, c=1;
+
+        for(int i = 3; i <= n; i++){
+            int next = a + b + c;
+            a = b;
+            b = c;
+            c  = next;
+        }
+
+        return c;
+    }
+}
+
+
+//___________________________________________________________________________________________________________________________
+Q26: https://leetcode.com/problems/palindrome-number/description/
+
+class Solution {
+    public boolean isPalindrome(int x) {
+        if(x < 0) return false;
+
+        String s = Integer.toString(x);
+
+        return isPalindrome(s, 0, s.length()-1);
+    }
+
+    static boolean isPalindrome(String s, int left, int right){
+        if(left >= right) return true;
+
+        if(s.charAt(left) != s.charAt(right)) return false;
+
+        return isPalindrome(s, left + 1, right - 1);
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q27: https://leetcode.com/problems/valid-palindrome/description/
+
+class Solution {
+    public boolean isPalindrome(String s) {
+        // Normalize the string by removing non-alphanumeric characters and converting to lowercase
+        s = s.replaceAll("[^a-zA-Z0-9]","").toLowerCase();        
+
+        return isPalindromeRecursive(s, 0, s.length() - 1);
+    }
+
+    private boolean isPalindromeRecursive(String s, int left, int right) {
+        if (left >= right) return true;
+        
+        if (s.charAt(left) != s.charAt(right)) return false;
+        
+        return isPalindromeRecursive(s, left + 1, right - 1);
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q28: https://leetcode.com/problems/climbing-stairs/description/
+
+// class Solution {
+//     public int climbStairs(int n) {
+//         if(n == 1) return 1;
+//         if(n == 0) return 1;
+
+//         return climbStairs(n-1) + climbStairs(n-2);
+//     }
+// }
+
+class Solution {
+    public int climbStairs(int n) {
+        int[] temp = new int[n+1];
+
+        Arrays.fill(temp, -1);
+
+        return climbStairsRecursive(n, temp);
+    }
+
+    static int climbStairsRecursive(int n, int[] temp){
+        if(n <= 1) return 1;
+
+        //if already computed return the store result
+        if(temp[n] != -1) return temp[n];
+
+        temp[n] = climbStairsRecursive(n-1, temp) + climbStairsRecursive(n-2, temp);
+
+        return temp[n];
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q29: https://leetcode.com/problems/subsets/description/
+
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        generateSubsets(nums, 0, new ArrayList<>(), result);
+        return result;
+    }
+    //'processed' represents the current subset being built
+    //'index' is the current position in 'nums'
+    private void generateSubsets(int[] nums, int index, List<Integer> processed, List<List<Integer>> result) {
+        
+        // Base case: if we have processed all elements
+        if (index == nums.length) {
+            result.add(new ArrayList<>(processed));  // Add the current subset to the result
+            return;
+        }
+
+        //Decision 1: Include the current element in the subset
+        processed.add(nums[index]); //Include nums[index] in the processed subset
+        generateSubsets(nums, index+1, processed, result); //Recur for next element
+        processed.remove(processed.size() - 1); //Backtrack: Remove the last element
+
+        //Decision 2: Exclude the current element from the subset
+        generateSubsets(nums, index+1, processed, result); //Recur for next element without including nums[index]
+    }
+}
+
+ // Dry run explanation for nums = [1, 2, 3]:
+        // 1. Initial Call: generateSubsets([1, 2, 3], 0, [], result)
+        // 2. Current index = 0, processed = []
+        //    - Decision 1: Include nums[0] (1)
+        //      processed = [1]
+        //      Recur with index = 1
+        // 3. Current index = 1, processed = [1]
+        //    - Decision 1: Include nums[1] (2)
+        //      processed = [1, 2]
+        //      Recur with index = 2
+        // 4. Current index = 2, processed = [1, 2]
+        //    - Decision 1: Include nums[2] (3)
+        //      processed = [1, 2, 3]
+        //      Recur with index = 3
+        // 5. Current index = 3, processed = [1, 2, 3]
+        //    - Base case reached, add [1, 2, 3] to result
+        //    - Backtrack: processed = [1, 2]
+        //    - Decision 2: Exclude nums[2] (3)
+        //      processed = [1, 2]
+        //      Recur with index = 3
+        // 6. Current index = 3, processed = [1, 2]
+        //    - Base case reached, add [1, 2] to result
+        //    - Backtrack: processed = [1]
+        //    - Decision 2: Exclude nums[1] (2)
+        //      processed = [1]
+        //      Recur with index = 2
+        // 7. Current index = 2, processed = [1]
+        //    - Decision 1: Include nums[2] (3)
+        //      processed = [1, 3]
+        //      Recur with index = 3
+        // 8. Current index = 3, processed = [1, 3]
+        //    - Base case reached, add [1, 3] to result
+        //    - Backtrack: processed = [1]
+        //    - Decision 2: Exclude nums[2] (3)
+        //      processed = [1]
+        //      Recur with index = 3
+        // 9. Current index = 3, processed = [1]
+        //    - Base case reached, add [1] to result
+        //    - Backtrack: processed = []
+        //    - Decision 2: Exclude nums[0] (1)
+        //      processed = []
+        //      Recur with index = 1
+        // 10. Current index = 1, processed = []
+        //    - Decision 1: Include nums[1] (2)
+        //      processed = [2]
+        //      Recur with index = 2
+        // 11. Current index = 2, processed = [2]
+        //    - Decision 1: Include nums[2] (3)
+        //      processed = [2, 3]
+        //      Recur with index = 3
+        // 12. Current index = 3, processed = [2, 3]
+        //    - Base case reached, add [2, 3] to result
+        //    - Backtrack: processed = [2]
+        //    - Decision 2: Exclude nums[2] (3)
+        //      processed = [2]
+        //      Recur with index = 3
+        // 13. Current index = 3, processed = [2]
+        //    - Base case reached, add [2] to result
+        //    - Backtrack: processed = []
+        //    - Decision 2: Exclude nums[1] (2)
+        //      processed = []
+        //      Recur with index = 2
+        // 14. Current index = 2, processed = []
+        //    - Decision 1: Include nums[2] (3)
+        //      processed = [3]
+        //      Recur with index = 3
+        // 15. Current index = 3, processed = [3]
+        //    - Base case reached, add [3] to result
+        //    - Backtrack: processed = []
+        //    - Decision 2: Exclude nums[2] (3)
+        //      processed = []
+        //      Recur with index = 3
+        // 16. Current index = 3, processed = []
+        //    - Base case reached, add [] to result
+        //    - Backtrack complete
+
+        // Final result: [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []]                                                                  
+
+
+
+//___________________________________________________________________________________________________________________________
+Q30: https://leetcode.com/problems/subsets-ii/description/
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+         
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        generateSubsets(nums, 0, new ArrayList<>(), result);
+        return result;
+    }
+
+    //'processed' represents the current subset being built
+    //'index' is the current position in 'nums'
+    private void generateSubsets(int[] nums, int index, List<Integer> processed, List<List<Integer>> result) {
+        
+        // Base case: if we have processed all elements
+        if (index == nums.length) {
+            result.add(new ArrayList<>(processed));  // Add the current subset to the result
+            return;
+        }
+
+        //Decision 1: Include the current element in the subset
+        processed.add(nums[index]); //Include nums[index] in the processed subset
+        generateSubsets(nums, index+1, processed, result); //Recur for next element
+        processed.remove(processed.size() - 1); //Backtrack: Remove the last element
+
+        //Decision 2: Exclude the current element from the subset
+        while(index + 1 < nums.length && nums[index] == nums[index+1]){
+            index++;
+        }
+        generateSubsets(nums, index+1, processed, result); //Recur for next element without including nums[index]
+    }
+}
+
+//___________________________________________________________________________________________________________________________
