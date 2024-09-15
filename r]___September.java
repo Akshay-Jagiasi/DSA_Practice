@@ -2124,3 +2124,208 @@ class Solution {
 }
 
 //___________________________________________________________________________________________________________________________
+Q31: https://leetcode.com/problems/merge-sorted-array/description/
+
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        
+        int p1 = m-1;
+        int p2 = n-1;
+        int merged = m+n-1;
+
+        //merge the arrays from the end to the beginning
+        while(p1 >= 0 && p2 >= 0){
+            if(nums1[p1] > nums2[p2]){
+                nums1[merged] = nums1[p1];
+                p1--;
+            }else{
+                nums1[merged] = nums2[p2];
+                p2--;
+            }
+            merged--;
+        }
+
+        //if there are still elements in nums2, copy them to nums1
+        while(p2 >= 0){
+            nums1[merged] = nums2[p2];
+            p2--;
+            merged--;
+        }
+
+        //No need to handle the remaining elements of nums1 if p1 >= 0;
+        //as they are already in place
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q32: https://leetcode.com/problems/special-positions-in-a-binary-matrix/description/
+
+class Solution {
+    public int numSpecial(int[][] mat) {
+        int n = mat.length;
+        int m = mat[0].length;
+
+        int[] rowSum = new int[n];
+        int[] colSum = new int[m];
+
+        int count = 0;
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(mat[i][j] == 1){
+                    rowSum[i]++;
+                    colSum[j]++;
+                }
+            }
+        }
+
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(mat[i][j] == 1 && rowSum[i] == 1 && colSum[j] == 1){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q33: https://leetcode.com/contest/biweekly-contest-139/problems/find-indices-of-stable-mountains/
+
+class Solution {
+    public List<Integer> stableMountains(int[] height, int threshold) {
+        
+        List<Integer> result = new ArrayList<>();
+        for(int i = 1; i< height.length; i++){
+            if(height[i-1] > threshold){
+                result.add(i);
+            }
+        }
+        
+        return result;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q34: https://leetcode.com/problems/remove-linked-list-elements/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        
+        //handle the case where head itself is going to be removed
+        while(head != null && head.val == val){
+            head = head.next;
+        }
+
+        ListNode current = head;
+        ListNode prev = null;
+
+        while(current != null){
+            if(current.val == val){
+                // Remove the current node by linking the previous node to the next node
+                if(prev != null){
+                    prev.next = current.next;
+                }
+            }else{
+                prev = current;
+            }
+            current = current.next;
+        }
+        return head;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q35: https://leetcode.com/problems/implement-stack-using-queues/description/
+
+class MyStack {
+
+    private Queue<Integer> queue;
+
+    public MyStack() {
+        queue = new LinkedList<>();
+    }
+    
+    public void push(int x) {
+        //add the elemnt to the queue
+        queue.offer(x);
+
+        int size = queue.size();
+        for(int i = 1; i < size; i++){
+            queue.offer(queue.poll());
+        }
+    }
+    
+    public int pop() {
+        return queue.poll();
+    }
+    
+    public int top() {
+        return queue.peek();
+    }
+    
+    public boolean empty() {
+        return queue.isEmpty();
+    }
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q36: https://leetcode.com/problems/final-array-state-after-k-multiplication-operations-i/description/
+
+class Solution {
+    public int[] getFinalState(int[] nums, int k, int multiplier) {
+
+        for(int count = 1; count <= k; count++){
+            int minElement = Integer.MAX_VALUE;
+            int minElementIndex = -1;  
+            
+            for(int i = 0; i < nums.length; i++){
+           
+                if(nums[i] < minElement){
+                    minElement = nums[i];
+                    minElementIndex = i;
+            
+                }
+            }
+            
+            nums[minElementIndex] *= multiplier;
+        }
+       
+        return nums;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
