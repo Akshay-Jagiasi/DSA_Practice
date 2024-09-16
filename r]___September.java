@@ -2404,6 +2404,7 @@ class MyLinkedList {
         size++;
     }
     
+    
     public void addAtIndex(int index, int val) {
         
         if(index < 0 || index > size){
@@ -2434,6 +2435,7 @@ class MyLinkedList {
         size++;
     }
     
+
     public void deleteAtIndex(int index) {
 
         Node current = head;
