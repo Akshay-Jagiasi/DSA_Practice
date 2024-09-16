@@ -2329,3 +2329,151 @@ class Solution {
 
 
 //___________________________________________________________________________________________________________________________
+Q37: https://leetcode.com/problems/design-linked-list/description/
+
+class MyLinkedList {
+
+
+    class Node{
+        private int val;
+        private Node next, prev;
+
+        Node(int val){
+            this.val = val;
+        }
+    }
+    
+    
+    private Node head, tail;
+    private int size;
+
+    
+    public MyLinkedList() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+    
+    
+    public int get(int index) {
+
+        if(index < 0 || index >= size){
+            return -1;
+        }
+
+        Node current = head;
+        
+        for(int i = 0; i < index; i++){
+            current = current.next;
+        }
+        
+        return current.val;
+    }
+    
+
+    public void addAtHead(int val) {
+        
+        Node newNode = new Node(val);
+        
+        if(size == 0){
+            head = newNode;
+            tail = newNode; 
+        }else{
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        
+        size++;
+    }
+    
+
+    public void addAtTail(int val) {
+        
+        Node newNode = new Node(val);
+        
+        if(size == 0){
+            head = newNode;
+            tail = newNode; 
+        }else{
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        
+        size++;
+    }
+    
+    public void addAtIndex(int index, int val) {
+        
+        if(index < 0 || index > size){
+            return;
+        }
+
+        if(index == 0){
+            addAtHead(val);
+            return;
+        }
+
+        if(index == size){
+            addAtTail(val);
+            return;
+        }
+
+        Node newNode = new Node(val);
+        Node current = head;
+
+        for(int i = 0; i < index; i++){
+            current = current.next;
+        }
+
+        newNode.next = current;
+        newNode.prev = current.prev;
+        current.prev.next = newNode;
+        current.prev = newNode;
+        size++;
+    }
+    
+    public void deleteAtIndex(int index) {
+
+        Node current = head;
+
+        if(index < 0 || index >= size){
+            return;
+        }
+
+        if(index == 0){
+            head = head.next;
+            if(head != null){
+                head.prev = null;
+            }
+        }else if(index == size-1){
+            tail = tail.prev;
+            if(tail != null){
+                tail.next = null;
+            }
+        }else{
+            Node currnt = head;
+            for(int i = 0; i < index; i++){
+                current = current.next;
+            }
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+        }
+        size--;
+        if(size == 0){
+            head = null;
+            tail = null;
+        }
+    }
+}
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList obj = new MyLinkedList();
+ * int param_1 = obj.get(index);
+ * obj.addAtHead(val);
+ * obj.addAtTail(val);
+ * obj.addAtIndex(index,val);
+ * obj.deleteAtIndex(index);
+ */
