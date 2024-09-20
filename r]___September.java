@@ -2479,3 +2479,676 @@ class MyLinkedList {
  * obj.addAtIndex(index,val);
  * obj.deleteAtIndex(index);
  */
+
+
+
+ //___________________________________________________________________________________________________________________________
+Q38: https://leetcode.com/problems/rotate-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        
+        if(head == null || k == 0){
+            return head;
+        }
+
+        //Find the length of the list and locate the current tail
+        int length = 1;
+        ListNode current = head;
+        while(current.next != null){
+            current = current.next;
+            length++;
+        }
+
+        // adjust to handle the cases where k > length
+        k = k % length;
+        if(k == 0){
+            return head;
+        }
+
+        // Find the new tail and rotate the list
+        ListNode newTail = head;
+        for(int i = 0; i < length - k - 1; i++){
+            newTail = newTail.next;
+        }
+
+        ListNode newHead = newTail.next;
+        newTail.next = null;
+        current.next = head;
+
+        return newHead;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q39:https://leetcode.com/problems/delete-node-in-a-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void deleteNode(ListNode node) {
+
+        //copy the value of the next node in the current node
+        node.val = node.next.val;
+
+        //bypass the next node
+        node.next = node.next.next;
+    }
+}
+
+// Example 1: Input: head = [4,5,1,9], node = 5
+// Expected Output: [4,1,9]
+
+// Before:
+// 4 -> 5 -> 1 -> 9
+// Current node.val = 5 and node.next.val = 1.
+    
+// Step 1: Copy the value of the next node (1) into the current node (5)
+//node.val = node.next.val;
+// After copying the value of node.next into node, we get:
+// node.val = 1  (so the list now looks like: 4 -> 1 -> 1 -> 9)
+        
+// Step 2: Adjust node.next to skip the next node
+//node.next = node.next.next;
+// Now the list becomes:
+// 4 -> 1 -> 9
+        
+// Final Output: [4, 1, 9]
+
+
+
+//___________________________________________________________________________________________________________________________
+Q40: https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+
+        // Edge case: If there's only one node, return null
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode current = head;
+        int length = 0;
+        
+        while(current != null){
+            current = current.next;
+            length++;
+        }
+
+        int n = length/2;
+
+        // //if we are deleting 1st node return head.next;
+        // if(n == 0){
+        //     return head;
+        // }
+
+        ListNode temp = head;
+
+        for(int i = 1; i < n; i++){
+            temp = temp.next;
+        }
+
+        temp.next = temp.next.next;   
+
+        return head;
+    }
+}
+
+
+//___________________________________________________________________________________________________________________________
+Q41: https://leetcode.com/problems/odd-even-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+
+        // Edge case: If the list is empty or has only one or two nodes
+        if (head == null || head.next == null || head.next.next == null) {
+            return head;
+        }
+
+        ListNode odd = head;
+        ListNode even = head.next;
+        ListNode evenHead = even;
+
+        while(even != null && even.next != null){
+            odd.next = even.next; //list the next odd node
+            odd = odd.next; //move the odd pointer forward
+            even.next = odd.next; //link the next even node
+            even = even.next;  //move even pointer forward
+        }
+
+        //once the traversal is done, connect the odd list to the head of the even list 
+        odd.next = evenHead;
+
+        return head;
+    }
+}
+
+/**
+ * Initial Setup:
+ * In the input list: 1 -> 2 -> 3 -> 4 -> 5
+ * Each node initially links to the next:
+ * 2.next points to 3
+ * 3.next points to 4
+ * 4.next points to 5
+ * 5.next points to null (end of the list)
+ * 
+ * Pointer Initialization:
+ * odd starts at the first node (1)
+ * even starts at the second node (2)
+ * 
+ * First Iteration:
+ * After processing:
+ * odd.next = even.next; // Links 1 to 3
+ * odd moves to 3
+ * 
+ * Current state:
+ * 1 -> 3
+ * 2 -> 4 -> 5
+ * 
+ * Second Iteration:
+ * even.next = odd.next; // Links 2 to 4
+ * even moves to 4
+ * 
+ * Current state:
+ * 1 -> 3
+ * 2 -> 4
+ * 
+ * Breaking the Link:
+ * Now, when we link the next odd node:
+ * odd.next = even.next; // Links 3 to 5
+ * odd moves to 5
+ * 
+ * Current state:
+ * 1 -> 3 -> 5
+ * 2 -> 4
+ * 
+ * Breaking the connection:
+ * even.next = odd.next; // Sets even.next to null (since 5.next is null)
+ * This means 4.next is now null, breaking the link to 5.
+ * 
+ * Final state:
+ * Odd List: 1 -> 3 -> 5 -> null
+ * Even List: 2 -> 4 -> null
+ * 
+ * Connecting the Lists:
+ * Finally, we connect the last node of the odd list (5) to the head of the even list (2):
+ * 1 -> 3 -> 5 -> 2 -> 4
+ * 
+ * This separates the odd and even nodes correctly.
+ */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q42: https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if(head == null) return null;
+
+        //Find the middle element
+        ListNode mid = findMiddle(head);
+
+        //The mid becomes the root of the BST
+        TreeNode root = new TreeNode(mid.val);
+
+        //BaseCase: if there's only one element in the list
+        if(head == mid) return root;
+
+        //recursively build the left and right subtrees
+        root.left = sortedListToBST(head); //left half
+        root.right = sortedListToBST(mid.next); //right half
+
+        return root;
+    }
+
+    private ListNode findMiddle(ListNode head){
+        ListNode prev = null;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast != null && fast.next != null){
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Disconnect the left half from the mid node
+        if(prev != null){
+            prev.next = null;
+        }
+
+        return slow;
+    }
+}
+
+// Input List Visualization
+// -10 -> -3 -> 0 -> 5 -> 9
+
+// Step-by-Step Dry Run
+
+// Initial Call: sortedListToBST(head)
+// Check for Base Case:
+// head is not null, so we proceed.
+
+// Find the Middle:
+// Call findMiddle(head).
+
+// Finding the Middle: findMiddle(head)
+// Initial State:
+// prev = null, slow = head (-10), fast = head (-10)
+
+// Iteration 1:
+// Update pointers:
+// prev = -10, slow = -3, fast = 0
+
+// Iteration 2:
+// Update pointers:
+// prev = -3, slow = 0, fast = 9
+
+// Iteration 3:
+// Update pointers:
+// prev = 0, slow = 5, fast = null (exit loop)
+
+// Disconnect Left Half:
+// Set prev.next = null, breaking the link.
+
+// Return Middle:
+// Returns slow (0), which is the middle node.
+
+// Back to sortedListToBST
+// Create Root:
+// Create a TreeNode with value 0:
+//       0
+
+// Base Case Check:
+// head != mid, so we proceed to build left and right subtrees.
+
+// Recursively Build Left Subtree:
+// Call sortedListToBST(head) with head = [-10, -3].
+
+// Left Subtree Call: sortedListToBST(head = [-10, -3])
+// Check for Base Case:
+// head is not null.
+
+// Find the Middle:
+// Call findMiddle(head).
+
+// Finding the Middle: findMiddle(head = [-10, -3])
+// Initial State:
+// prev = null, slow = head (-10), fast = head (-10)
+
+// Iteration 1:
+// Update pointers:
+// prev = -10, slow = -3, fast = null (exit loop)
+
+// Disconnect Left Half:
+// Set prev.next = null, breaking the link.
+
+// Return Middle:
+// Returns slow (-3).
+
+// Back to sortedListToBST(head = [-10, -3])
+// Create Node:
+// Create a TreeNode with value -3:
+//       -3
+
+// Base Case Check:
+// head != mid, so we proceed to build left and right subtrees.
+
+// Recursively Build Left Subtree:
+// Call sortedListToBST(head = [-10]).
+
+// Left Subtree Call: sortedListToBST(head = [-10])
+// Check for Base Case:
+// head is not null.
+
+// Find the Middle:
+// Call findMiddle(head).
+
+// Finding the Middle: findMiddle(head = [-10])
+// Initial State:
+// prev = null, slow = head (-10), fast = head (-10)
+
+// Iteration:
+// fast becomes null, so we exit the loop.
+
+// Return Middle:
+// Returns slow (-10).
+
+// Back to sortedListToBST(head = [-10])
+// Create Node:
+// Create a TreeNode with value -10:
+//        -3
+//       /
+//     -10
+
+// Base Case Check:
+// head == mid, return TreeNode(-10).
+
+// Back to sortedListToBST(head = [-10, -3])
+// Build Right Subtree:
+// Call sortedListToBST(mid.next) with head = null.
+
+// Right Subtree Call: sortedListToBST(head = null)
+// Check for Base Case:
+// head is null, return null.
+
+// Back to sortedListToBST(head = [-10, -3])
+// Finished Left Subtree:
+//        -3
+//       /
+//     -10
+
+// Build Right Subtree of Original Root (Value 0)
+// Recursively Build Right Subtree:
+// Call sortedListToBST(mid.next) with head = [5, 9].
+
+// Right Subtree Call: sortedListToBST(head = [5, 9])
+// Check for Base Case:
+// head is not null.
+
+// Find the Middle:
+// Call findMiddle(head).
+
+// Finding the Middle: findMiddle(head = [5, 9])
+// Initial State:
+// prev = null, slow = head (5), fast = head (5)
+
+// Iteration 1:
+// Update pointers:
+// prev = 5, slow = 9, fast = null (exit loop)
+
+// Disconnect Left Half:
+// Set prev.next = null, breaking the link.
+
+// Return Middle:
+// Returns slow (9).
+
+// Back to sortedListToBST(head = [5, 9])
+// Create Node:
+// Create a TreeNode with value 9:
+//        9
+
+// Base Case Check:
+// head != mid, proceed to build left and right subtrees.
+
+// Build Left Subtree:
+// Call sortedListToBST(head = [5]).
+
+// Left Subtree Call: sortedListToBST(head = [5])
+// Check for Base Case:
+// head is not null.
+
+// Find the Middle:
+// Call findMiddle(head).
+
+// Finding the Middle: findMiddle(head = [5])
+// Initial State:
+// prev = null, slow = head (5), fast = head (5)
+
+// Iteration:
+// fast becomes null, exit the loop.
+
+// Return Middle:
+// Returns slow (5).
+
+// Back to sortedListToBST(head = [5])
+// Create Node:
+// Create a TreeNode with value 5:
+//        9
+//       /
+//      5
+
+// Base Case Check:
+// head == mid, return TreeNode(5).
+
+// Back to sortedListToBST(head = [5, 9])
+// Build Right Subtree:
+// Call sortedListToBST(mid.next) with head = null.
+
+// Right Subtree Call: sortedListToBST(head = null)
+// Check for Base Case:
+// head is null, return null.
+
+// Finished Right Subtree of 0
+// Finished Right Subtree:
+//        9
+//       /
+//      5
+
+// Final Tree Structure
+// Combine the results to form the complete BST:
+//          0
+//        /   \
+//      -3     9
+//     /       /
+//   -10      5
+
+// Final Output
+// The height-balanced BST represents the structure [0, -3, 9, -10, null, 5].
+
+
+
+//___________________________________________________________________________________________________________________________
+Q43: https://leetcode.com/problems/intersection-of-two-linked-lists/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+// Steps to Solve:
+// Calculate the Length of Both Lists:
+// The first step is to find the length of both linked lists. Let's call them lenA for the first list (listA) and lenB for the second list (listB).
+// Why?: If one list is longer than the other, we need to equalize their lengths by skipping some nodes from the longer list so that both pointers can start from an aligned position when traversing.
+
+// Align the Starting Points:
+// If one list is longer, move the pointer of the longer list ahead by the difference in lengths (lenB - lenA or lenA - lenB). After this, both lists will have the same number of nodes left to traverse, 
+// from their respective starting points.
+// Why?: The idea is to get the two pointers to be equidistant from the intersection point. So, when we move both pointers simultaneously from here on, they will meet at the intersection node (if one exists).
+
+// Traverse Both Lists Simultaneously:
+// After aligning the two lists, move both pointers one step at a time. If the two pointers point to the same node, that node is the intersection point, and you return it.
+// If the two pointers reach the end (null), then there is no intersection, and you return null.
+
+// public class Solution {
+//     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        
+//         if(headA == null || headB == null) return null;
+
+//         //get the lengths of both lists
+//         int lenA = getLength(headA);
+//         int lenB = getLength(headB);
+
+//         // Align the start of both lists
+//         ListNode longer = lenA > lenB ? headA : headB;
+//         ListNode shorter = lenA < lenB ? headA : headB;
+
+//         //Advance the pointer of the longer list by the difference in lengths
+//         for(int i = 0; i< Math.abs(lenA - lenB); i++){
+//             longer = longer.next;
+//         }
+
+//         //Traverse both list together
+//         while(longer != shorter){
+//             longer = longer.next;
+//             shorter = shorter.next;
+//         }
+
+//         return longer; //or shorter both are the same at this point 
+//     }
+
+
+//     private int getLength(ListNode head){
+//         int length = 0;
+//         while(head != null){
+//             length++;
+//             head = head.next;
+//         }
+
+//         return length;
+//     }
+// }
+
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+        
+        ListNode a = headA;
+        ListNode b = headB;
+        
+        // Traverse both lists. When one pointer reaches the end, switch it to the other list's head.
+        // If the lists intersect, they will eventually meet at the intersection node.
+        // If they do not intersect, both pointers will become null at the same time.
+        while (a != b) {
+            a = (a == null) ? headB : a.next;
+            b = (b == null) ? headA : b.next;
+        }
+        
+        // Either both will be null (no intersection), or they will meet at the intersection node.
+        return a;
+    }
+}
+
+// When two linked lists intersect, they share a common tail. So, if you traverse both lists starting from the heads and move node by node, 
+//eventually, they should meet at the intersection point (if one exists).
+// However, if the two lists have different lengths, they do not start at the same distance from the intersection point.
+// Here's where the pointer-switching technique helps by ensuring both pointers travel the same total distance.
+// Why Does Switching Work?
+// Consider two linked lists with the following structure:
+
+// List A:        4 -> 1 -> [8 -> 4 -> 5]
+// List B:   5 -> 6 -> 1 -> [8 -> 4 -> 5]
+// The lists intersect at node 8.
+// List A has nodes before the intersection: 4 -> 1 (2 nodes).
+// List B has nodes before the intersection: 5 -> 6 -> 1 (3 nodes).
+// Notice the lengths:
+
+// List A has 5 nodes in total.
+// List B has 6 nodes in total.
+// If we don't do anything, the pointers starting from the heads of these lists will not meet at the same time at the intersection point
+// because one pointer will reach the end earlier than the other. This is because they start from different distances to the intersection point.
+
+// What Switching Does:
+// When the pointers reach the end of one list and switch to the head of the other list, they essentially "make up" for the difference in length. Here’s how:
+
+// Pointer a (starting at List A):
+// Initially, it traverses all nodes of List A: 4 -> 1 -> 8 -> 4 -> 5.
+// When a reaches the end (null), it switches to List B and traverses: 5 -> 6 -> 1 -> 8.
+// Pointer b (starting at List B):
+// Initially, it traverses all nodes of List B: 5 -> 6 -> 1 -> 8 -> 4 -> 5.
+// When b reaches the end (null), it switches to List A and traverses: 4 -> 1 -> 8.
+// Equal Distance Traveled:
+// By switching, the total distance traveled by both pointers becomes equal:
+
+// Pointer a covers:
+// Length of A (before the switch) + Length of B (after the switch).
+// Pointer b covers:
+// Length of B (before the switch) + Length of A (after the switch).
+// Thus, both pointers will have traveled exactly the same number of nodes when they meet at the intersection point.
+
+// Example Walkthrough:
+// First pass (before switching):
+// Pointer a moves through List A: 4 -> 1 -> 8 -> 4 -> 5 -> null (reaches the end of List A).
+// Pointer b moves through List B: 5 -> 6 -> 1 -> 8 -> 4 -> 5 -> null (reaches the end of List B).
+// Now they have both reached the end of their respective lists, but they haven't met yet because they started at different points.
+
+// Switching:
+// Pointer a moves to the head of List B: 5 -> 6 -> 1 -> 8.
+// Pointer b moves to the head of List A: 4 -> 1 -> 8.
+// Second pass (after switching):
+
+// Now, both pointers traverse the opposite lists.
+// Eventually, both a and b meet at the intersection point 8, having traveled the same distance.
+// Why They Meet at the Intersection:
+// When we switch the pointers:
+
+// Pointer a, after completing List A, starts at the beginning of List B and traverses the extra nodes that b already traversed initially.
+// Similarly, Pointer b, after completing List B, starts at the beginning of List A and traverses the extra nodes that a already traversed initially.
+// By the time they both reach the intersection, they have traversed an equal number of nodes in total:
+
+// Total distance for both pointers = (length of non-overlapping part of List A) + (length of overlapping part) = (length of non-overlapping part of List B) + (length of overlapping part).
+// This ensures they will meet at the intersection point if it exists, or both will reach null at the same time if no intersection exists.
+
+// Intuition:
+// The switching trick works because it aligns the two pointers by making them travel the same combined length,
+// so when they move one step at a time after switching,
+// they are perfectly synchronized to meet at the intersection point (or both hit null if there's no intersection).
+// Why the Previous Approach Failed in Some Cases:
+// The previous approach of comparing node-by-node after adjusting for lengths manually may have missed some edge cases, especially in scenarios where:
+// No intersection exists, or
+// The lists have identical node values but are different objects in memory.
+// The pointer-switching approach directly compares node memory addresses, making it foolproof and capable of handling all edge cases correctly.
