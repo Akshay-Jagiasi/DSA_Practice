@@ -3152,3 +3152,188 @@ public class Solution {
 // No intersection exists, or
 // The lists have identical node values but are different objects in memory.
 // The pointer-switching approach directly compares node memory addresses, making it foolproof and capable of handling all edge cases correctly.
+
+
+
+//___________________________________________________________________________________________________________________________
+Q44: https://leetcode.com/problems/swapping-nodes-in-a-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode swapNodes(ListNode head, int k) {
+        if(head == null ) return null;
+
+        int length = 0;
+        ListNode current = head;
+
+        while(current != null){
+            length++;
+            current = current.next;
+        }
+
+        int end = length - k + 1;
+
+        ListNode beginningNode = head;
+        for(int i = 1; i < k; i++){
+            beginningNode = beginningNode.next;
+        }
+
+        ListNode endNode = head;
+        for(int i = 1; i < end; i++){
+            endNode = endNode.next;
+        }
+
+        int temp = beginningNode.val;
+        beginningNode.val = endNode.val;
+        endNode.val = temp;
+
+        return head;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q45: https://leetcode.com/problems/merge-in-between-linked-lists/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        
+        ListNode prevA = list1;
+        ListNode afterB = list1;
+
+        for(int i = 0; i< a-1; i++){
+            prevA = prevA.next;
+        }
+
+        afterB = prevA;
+        for(int i = 0; i < (b - a + 2); i++){
+            afterB = afterB.next;
+        }
+
+        //connect the prevA node to the head of list2
+        prevA.next = list2;
+        
+        //find the last node of list2
+        ListNode tail2 = list2;
+        while(tail2.next != null){
+            tail2 = tail2.next;
+        }
+        
+        //connect the last node of list2 to the node afterB
+        tail2.next = afterB;
+
+        return list1;
+
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q46: https://leetcode.com/problems/next-greater-node-in-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[] nextLargerNodes(ListNode head) {
+        
+        //conver linked list to an arraylist
+        ArrayList<Integer> values = new ArrayList<>();
+        ListNode current = head;
+        while(current != null){
+            values.add(current.val);
+            current = current.next;
+        }
+
+        int n = values.size();
+        int[] result = new int[n];
+        Stack<Integer> stack = new Stack<>(); //stack to store indices
+
+        for(int i = 0; i < n; i++){
+            //while stack is not empty and current value is greater than the value at index on stack top
+            while(!stack.isEmpty() && values.get(i) > values.get(stack.peek())){
+                int index = stack.pop();
+                result[index] = values.get(i);
+            }
+            //push current index onto the stack 
+            stack.push(i);
+        }
+
+        return result;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q47: https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode modifiedList(int[] nums, ListNode head) {
+
+        //convert the nums array into a hashset for o(1) lookup time
+        HashSet<Integer> set = new HashSet<>();
+        for(int num : nums){
+            set.add(num);
+        }
+
+        //handle the case where the head needs to be removed
+        while(head != null && set.contains(head.val)){
+            head = head.next;
+        }
+
+        if(head == null){
+            return null;
+        }
+
+        ListNode current = head;
+
+        while(current != null && current.next != null){
+            if(set.contains(current.next.val)){
+                current.next = current.next.next;
+            }else{
+                current = current.next;
+            }
+        }
+
+        return head;
+    }
+}
