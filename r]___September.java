@@ -3337,3 +3337,63 @@ class Solution {
         return head;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q48: https://leetcode.com/problems/split-linked-list-in-parts/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode[] splitListToParts(ListNode head, int k) {
+        
+        int length = 0;
+        ListNode current = head;
+        while(current != null){
+            length++;
+            current = current.next;
+        }
+
+        // baseSize: The number of nodes each part should have, at a minimum.
+        // This is calculated by dividing length by k.
+        int baseSize = length / k;
+        // extraParts: The number of parts that will have one extra node
+        // This is the remainder when length is divided by k. The first extraParts parts will get one more node than baseSize
+        int extraParts = length % k;
+
+        ListNode[] result = new ListNode[k];
+        current = head;
+
+        for(int i = 0; i < k; i++){
+            result[i] = current;
+            // Calculate currentPartSize as baseSize plus an extra node if i is less than extraParts
+            //This ensures that the first few parts will get one extra node if needed
+            int currentPartSize = baseSize + (i < extraParts ? 1 : 0);
+
+            // Move to the end of the current part
+            for(int j = 1; j < currentPartSize && current != null; j++){
+                current = current.next;
+            }
+
+            // Break the link if necessary
+            if(current != null){
+                ListNode nextPart = current.next;  // Save the start of the next part
+                current.next = null; // Break the link to split the part
+                current = nextPart;  // Move to the next part
+            }
+        }
+
+        return result;
+    }
+}
+
+
