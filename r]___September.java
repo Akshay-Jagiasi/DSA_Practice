@@ -3397,3 +3397,56 @@ class Solution {
 }
 
 
+//___________________________________________________________________________________________________________________________
+Q49: https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode current = head;
+        
+        while(current != null && current.next != null){
+            ListNode nextNode = current.next;
+
+            // Calculate GCD of current node and next node
+            int gcdValue = gcd(current.val, nextNode.val);
+
+            ListNode gcdNode = new ListNode(gcdValue);
+
+            // Insert the GCD node between the current and next node
+            current.next = gcdNode;
+            gcdNode.next = nextNode;
+
+            // Move the current pointer two steps ahead
+            current = nextNode;
+        }
+
+        return head;
+    }
+
+    // 1. GCD (Greatest Common Divisor) is calculated by replacing 'a' with 'b' 
+    // and 'b' with the remainder of 'a' divided by 'b' (a % b).
+    // 2. Repeat this until 'b' becomes 0. At that point, 'a' is the GCD.
+    // Example: gcd(48, 18)
+    // -> gcd(18, 48 % 18 = 12)
+    // -> gcd(12, 18 % 12 = 6)
+    // -> gcd(6, 12 % 6 = 0)
+    // Result: GCD = 6
+    private int gcd(int a, int b){
+        if(b == 0) return a;
+        return gcd(b, a % b);
+    }
+}
