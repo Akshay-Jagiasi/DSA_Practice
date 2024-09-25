@@ -3667,3 +3667,93 @@ class Solution {
         }
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q56: https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/
+
+// /**
+//  * Definition for singly-linked list.
+//  * public class ListNode {
+//  *     int val;
+//  *     ListNode next;
+//  *     ListNode() {}
+//  *     ListNode(int val) { this.val = val; }
+//  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+//  * }
+//  */
+// class Solution {
+//     public int pairSum(ListNode head) {
+
+//         ArrayList<Integer> values = new ArrayList<>();
+    
+//         ListNode current = head;
+//         while(current != null){
+//             values.add(current.val);
+//             current = current.next;
+//         }
+
+//         int n = values.size();
+//         int maxSum = 0;
+//         for(int i = 0; i < n; i++){
+//             int twinSum = values.get(i) + values.get(n - i - 1);
+//             maxSum = Math.max(maxSum, twinSum);
+//         }
+
+//         return maxSum;
+//     }
+// }
+
+
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+//O(1) space complexity solution
+class Solution {
+    public int pairSum(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        
+        while(fast != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode secondHalf = reverseList(slow);
+
+        ListNode firstHalf = head;
+        int maxSum = 0;
+        while(secondHalf != null){
+            maxSum = Math.max(maxSum, firstHalf.val + secondHalf.val);
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return maxSum;
+    }
+
+    private ListNode reverseList(ListNode head){
+        ListNode prev = null;
+        ListNode present = head;
+
+        while(present != null){
+            ListNode next = present.next;
+            present.next = prev;
+            prev = present;
+            present = next;
+        }
+
+        return prev;
+    }
+}
