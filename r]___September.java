@@ -3507,3 +3507,163 @@ class Solution {
         return false; //current node does not match the current list node
     }  
 } 
+
+
+//___________________________________________________________________________________________________________________________
+Q51: https://leetcode.com/problems/linked-list-random-node/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    private ListNode head;
+    private Random random;
+
+    public Solution(ListNode head) {
+        this.head = head;
+        this.random = new Random();    
+    }
+    
+    public int getRandom() {
+        ListNode current = head;
+        int result = current.val;
+        int count = 1;
+
+        while(current != null){
+
+            if(random.nextInt(count) == 0){
+                result = current.val;
+            }
+            current = current.next;
+            count++;
+        }
+
+        return result;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(head);
+ * int param_1 = obj.getRandom();
+ */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q52: https://leetcode.com/problems/merge-strings-alternately/description/
+
+class Solution {
+    public String mergeAlternately(String word1, String word2) {
+        StringBuilder merged = new StringBuilder();
+        int minLength = Math.min(word1.length(), word2.length());
+
+        for(int i = 0; i < minLength; i++){
+            merged.append(word1.charAt(i));
+            merged.append(word2.charAt(i));
+        }
+
+        if(word1.length() > minLength){
+            merged.append(word1.substring(minLength));
+        }
+
+        if(word2.length() > minLength){
+            merged.append(word2.substring(minLength));
+        }
+
+        return merged.toString();
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q53: https://leetcode.com/problems/greatest-common-divisor-of-strings/description/
+
+/**
+ * The gcdOfStrings function finds the largest string x that divides both str1 and str2.
+ * It uses the GCD of the lengths of the two strings to determine the maximum possible length of x.
+ * If str1 + str2 equals str2 + str1, the substring of length GCD(len1, len2) is the common divisor.
+ */
+
+ class Solution {
+    public String gcdOfStrings(String str1, String str2) {
+        if(!(str1 + str2).equals(str2 + str1)){
+            return "";
+        }
+
+        int len1 = str1.length();
+        int len2 = str2.length();
+
+        int gcdLength = gcd(len1, len2);
+
+        return str1.substring(0, gcdLength);
+    }
+
+    private int gcd(int a, int b){
+        if(b == 0){
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q54: https://leetcode.com/problems/can-place-flowers/description/
+
+class Solution {
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        int length = flowerbed.length;
+
+        for (int i = 0; i < length; i++) {
+            // Check if the current plot is empty and adjacent plots are either empty or non-existent
+            if (flowerbed[i] == 0 && 
+                (i == 0 || flowerbed[i - 1] == 0) && 
+                (i == length - 1 || flowerbed[i + 1] == 0)) {
+
+                flowerbed[i] = 1; // Place a flower
+                n--; // Reduce number of flowers left to plant
+
+                if (n == 0) {
+                    return true; // All flowers placed
+                }
+            }
+        }
+
+        return n <= 0; // Return true if all flowers were placed, otherwise false
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q55: https://leetcode.com/problems/move-zeroes/description/
+
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int n = nums.length;
+        int nonZeroIndex = 0;
+        // Move all non-zero elements to the front
+        for(int i = 0; i < n; i++){
+            if(nums[i] != 0){
+                nums[nonZeroIndex] = nums[i];
+                nonZeroIndex++;
+            }
+        }
+        
+        // Fill the remaining positions with zeros
+        for(int i = nonZeroIndex; i< n; i++){
+            nums[i] = 0;
+        }
+    }
+}
