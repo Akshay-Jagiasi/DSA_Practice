@@ -3965,3 +3965,30 @@ class Solution {
         return sPointer == s.length();
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q61: https://leetcode.com/problems/reverse-words-in-a-string/description/?envType=study-plan-v2&envId=leetcode-75
+
+class Solution {
+    public String reverseWords(String s) {
+        
+        //step 1: Trim leading and trailing(space after last character) spaces
+        s = s.trim();
+
+        //step2: split the string by spaces
+        String[] words = s.split("\\s+");
+        
+        //reverse the order of the words
+        int n = words.length;
+        for(int i = 0; i < n/2; i++){
+            String temp = words[i];
+            words[i] = words[n - i - 1];
+            words[n - i - 1] = temp;
+        }
+
+        //step 4: join the words with the single space between them
+        return String.join(" ", words);
+    }
+}
