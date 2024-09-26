@@ -4028,3 +4028,32 @@ Q62: https://leetcode.com/problems/guess-number-higher-or-lower/?envType=study-p
         return -1;
     }
 }
+
+
+//___________________________________________________________________________________________________________________________
+Q63: https://leetcode.com/problems/maximum-average-subarray-i/description/?envType=study-plan-v2&envId=leetcode-75
+
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        
+        double maxSum = 0.0;
+
+        //step 1 : calculate the sum of first k elements
+        for(int i = 0; i < k; i++){
+            maxSum += nums[i];
+        }
+
+        double windowSum = maxSum;
+
+        //step 2: slide window to the array 
+        for(int i = k; i < nums.length; i++){
+
+            //Add the next element and remove the leftmost element 
+            windowSum = windowSum + nums[i] - nums[i - k]; 
+
+            maxSum = Math.max(maxSum, windowSum);
+        }
+
+        return maxSum / k;
+    }
+}
