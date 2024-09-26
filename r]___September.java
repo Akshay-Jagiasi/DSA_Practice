@@ -3757,3 +3757,123 @@ class Solution {
         return prev;
     }
 }
+
+
+
+
+//___________________________________________________________________________________________________________________________
+Q57:https://leetcode.com/problems/find-pivot-index/
+
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int n = nums.length;
+        int leftSum = 0;
+        int rightSum = 0;
+
+        for(int num : nums){
+            rightSum += num;
+        }
+
+        for(int i = 0; i < n; i++){
+
+            rightSum -= nums[i];
+
+            if(leftSum == rightSum){
+                return i;
+            }
+
+            leftSum += nums[i];
+        }
+
+        
+
+        return -1;
+    }
+}
+
+// Initialization:
+
+// Input Array: nums = [1, 7, 3, 6, 5, 6]
+// leftSum = 0
+// rightSum = 0
+// Calculate Total Right Sum:
+
+// Loop through the array to calculate rightSum.
+// Iteration 1: num = 1 → rightSum = 1
+// Iteration 2: num = 7 → rightSum = 8
+// Iteration 3: num = 3 → rightSum = 11
+// Iteration 4: num = 6 → rightSum = 17
+// Iteration 5: num = 5 → rightSum = 22
+// Iteration 6: num = 6 → rightSum = 28
+// After the loop, rightSum = 28.
+// Iterate to Find Pivot Index:
+
+// Loop through the array with the index i:
+
+// Iteration 1 (i = 0):
+
+// Current element: nums[0] = 1
+// Update rightSum: rightSum -= 1 → rightSum = 27
+// Check if leftSum == rightSum: 0 == 27 → false
+// Update leftSum: leftSum += 1 → leftSum = 1
+// Iteration 2 (i = 1):
+
+// Current element: nums[1] = 7
+// Update rightSum: rightSum -= 7 → rightSum = 20
+// Check if leftSum == rightSum: 1 == 20 → false
+// Update leftSum: leftSum += 7 → leftSum = 8
+// Iteration 3 (i = 2):
+
+// Current element: nums[2] = 3
+// Update rightSum: rightSum -= 3 → rightSum = 17
+// Check if leftSum == rightSum: 8 == 17 → false
+// Update leftSum: leftSum += 3 → leftSum = 11
+// Iteration 4 (i = 3):
+
+// Current element: nums[3] = 6
+// Update rightSum: rightSum -= 6 → rightSum = 11
+// Check if leftSum == rightSum: 11 == 11 → true
+// Since this condition is true, return the index 3.
+
+
+
+//___________________________________________________________________________________________________________________________
+Q58: https://leetcode.com/problems/single-number/description/
+
+// class Solution {
+//     public int singleNumber(int[] nums) {
+//         int n = nums.length;
+//         Arrays.sort(nums);
+//         for(int i= 0; i<n-1; i+=2){
+//             if(nums[i] != nums[i+1]){
+//                 return nums[i];
+//             }
+//         } 
+//         return nums[nums.length-1]; 
+//     }
+// }
+
+
+//USING XOR
+// Why Does This Work?
+// Cancelling Out Duplicates: When you XOR two identical numbers, they cancel each other out to 0. 
+// For example:
+// 1 ⊕ 1 = 0  // Both 1s cancel out
+// 2 ⊕ 2 = 0  // Both 2s cancel out
+// 
+// As you process the array, each pair of duplicates will cancel out:
+// After processing both 1s, the contribution of 1s becomes 0.
+// After processing both 2s, the contribution of 2s becomes 0.
+// 
+// The only number that doesn’t get canceled out is the number that appears once (in this case, 4).
+class Solution {
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for(int num : nums){
+            result = result ^ num;
+        } 
+        return result; 
+    }
+}
+
+
