@@ -3920,3 +3920,48 @@ class Solution {
 }
 
 
+
+//___________________________________________________________________________________________________________________________
+//                                                      ***I M P ***
+// charAt(int index): Returns the character at the specified index.
+// indexOf(char ch): Returns the index of the first occurrence of the character, or -1 if not found.
+// length(): Returns the number of characters in the string.
+// substring(int beginIndex, int endIndex): Extracts a substring from the string.
+// toLowerCase(): Converts all characters to lowercase.
+// toUpperCase(): Converts all characters to uppercase.
+// equals(Object obj): Checks if two strings are equal.
+// equalsIgnoreCase(String anotherString): Compares two strings, ignoring case.
+// replace(char oldChar, char newChar): Replaces all occurrences of a character with another.
+// split(String regex): Splits the string into parts based on a regular expression.
+// trim(): Removes leading and trailing spaces.
+// contains(CharSequence seq): Checks if the string contains a specific substring.
+//___________________________________________________________________________________________________________________________
+
+
+//___________________________________________________________________________________________________________________________
+Q60: https://leetcode.com/problems/is-subsequence/?envType=study-plan-v2&envId=leetcode-75
+
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        if(s.length() == 0){
+            return true;
+        }
+
+        int sPointer = 0;
+        int tPointer = 0;
+
+        while(tPointer < t.length()){
+
+            if(t.charAt(tPointer) == s.charAt(sPointer)){
+                sPointer++;
+
+                if(sPointer == s.length()){
+                    return true;
+                }
+            }
+            tPointer++;
+        }
+
+        return sPointer == s.length();
+    }
+}
