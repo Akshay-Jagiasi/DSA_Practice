@@ -3877,3 +3877,46 @@ class Solution {
 }
 
 
+
+//___________________________________________________________________________________________________________________________
+Q59: https://leetcode.com/problems/reverse-vowels-of-a-string/?envType=study-plan-v2&envId=leetcode-75
+
+class Solution {
+    public String reverseVowels(String s) {
+
+        // convert the inout string into a character array for easy manipulation
+        char[] chars = s.toCharArray();
+
+        int left = 0;
+        int right = s.length() - 1;
+
+        String vowels = "aeiouAEIOU";
+
+        while(left < right){
+            
+            // Move the left pointer until we find a vowel or pointers cross
+            while(left < right && vowels.indexOf(chars[left]) == -1){
+                left++;
+            }
+
+            // Move the right pointer until we find a vowel or pointers cross
+            while(left < right && vowels.indexOf(chars[right]) == -1){
+                right--;
+            }
+
+            // If both chars at left and right are vowels, swap them
+            if(left < right){
+                char temp = chars[left];
+                chars[left] = chars[right];
+                chars[right] = temp;
+                left++;
+                right--;
+            }
+        }
+        
+        // Return the modified string by converting the char array back to a string
+        return new String(chars);
+    }
+}
+
+
