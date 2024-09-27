@@ -4094,3 +4094,105 @@ class Solution {
         return null;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q65: https://leetcode.com/problems/leaf-similar-trees/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+
+        //Get leaf sequences from both trees
+        List<Integer> leaves1 = new ArrayList<>();
+        List<Integer> leaves2 = new ArrayList<>();
+
+        //Extract leaf sequence from both trees
+        getLeafSequence(root1, leaves1);
+        getLeafSequence(root2, leaves2);
+
+        //compare the two sequence
+        return leaves1.equals(leaves2);
+    }
+
+    //Helper function to perform DFS and collect leaf nodes
+    private void getLeafSequence(TreeNode node, List<Integer> leafSeq){
+        
+        if(node == null){
+            return;
+        }
+        
+        //If its leaf node add its value to the sequence
+        if(node.left == null && node.right == null){
+            leafSeq.add(node.val);
+        }
+        
+        //recursively search the left and right subtrees
+        getLeafSequence(node.left, leafSeq);
+        getLeafSequence(node.right, leafSeq);
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q66: https://leetcode.com/problems/count-good-nodes-in-binary-tree/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int goodNodes(TreeNode root) {
+        
+        return countGoodNodes(root, Integer.MIN_VALUE);
+    }
+
+    public int countGoodNodes(TreeNode node, int maxSoFar){
+
+        if(node == null){
+            return 0;
+        }
+
+        int count = 0;
+
+        // If the current node is greater than or equal to the max value encountered so far, it's a good node.
+        if(node.val >= maxSoFar){
+            count = 1;
+        }
+
+        maxSoFar = Math.max(maxSoFar, node.val);
+
+        // Recursively count the good nodes in the left and right subtrees.
+        count = count + countGoodNodes(node.left, maxSoFar);
+        count = count + countGoodNodes(node.right, maxSoFar);
+
+        return count;
+    }
+}
