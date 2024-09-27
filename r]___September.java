@@ -4196,3 +4196,49 @@ class Solution {
         return count;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q67: https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        // Base case 1: If the current node (root) is null, return null (nothing to search here)
+        if(root == null){
+            return null;
+        }   
+
+        // Base case 2: If the current node is equal to either p or q, return this node (found one of the targets)
+        if(root == p || root == q){
+            return root;
+        }
+
+        // Recursive calls: Traverse the left and right subtrees to search for p and q
+        // Search for p and q in the left subtree
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        // Search for p and q in the right subtre
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        // If both left and right subtrees return non-null values, it means that p is in one subtree
+        // and q is in the other subtree. Therefore, the current node (root) is the LCA.
+        if(left != null && right != null){
+            return root;
+        }
+
+        // If only one subtree returned a non-null value, return that non-null value.
+        // This means either p or q is found in one subtree or p and q are both deeper in one subtree.
+        // If both are null, this node cannot be the LCA, so return null.
+        return left == null ? right : left;
+    }
+}
