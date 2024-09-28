@@ -4242,3 +4242,73 @@ class Solution {
         return left == null ? right : left;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q68: https://leetcode.com/problems/find-the-difference-of-two-arrays/description/
+
+class Solution {
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set2 = new HashSet<>();
+
+        for(int num : nums1){
+            set1.add(num);
+        }
+
+        for(int num : nums2){
+            set2.add(num);
+        } 
+
+        // Find elements in set1 that are not in set2
+        List<Integer> result1 = new ArrayList<>(set1);
+        result1.removeAll(set2);// Remove common elements
+
+        // Find elements in set2 that are not in set1
+        List<Integer> result2 = new ArrayList<>(set2);
+        result2.removeAll(set1);// Remove common elements
+
+        List<List<Integer>> answer = new ArrayList<>();
+        answer.add(result1);
+        answer.add(result2);
+
+        return answer;
+        
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q69: https://leetcode.com/problems/unique-number-of-occurrences/description/
+
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        
+        //step 1: count frequency of each element
+        Map<Integer, Integer> frequencyMap = new HashMap<>();
+
+        for(int num : arr){
+            //update the frequency map
+            //if 'num' exists in the map increment its count; otherwise initialize it with 1
+            frequencyMap.put(num, frequencyMap.getOrDefault(num, 0) + 1);
+        }
+
+        //step2: check if the occurences (frequencies) are unique
+        //create a hashset to store the unique frequency
+        Set<Integer> occurences = new HashSet<>();
+
+        for(int freq : frequencyMap.values()){
+            //try to add the frequency to the hashset 
+            //if the frequency already exists in the set it's a duplicate frequency
+            if(!occurences.add(freq)){
+                //if adding fails (i.e frequency is already present) return false
+                return false;
+            }
+        }
+        
+        //step 3: if we went through all frequencies without finding duplicate return true
+        return true;
+    }
+}
