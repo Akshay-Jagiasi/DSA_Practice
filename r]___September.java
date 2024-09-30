@@ -4312,3 +4312,126 @@ class Solution {
         return true;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q70: https://leetcode.com/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=leetcode-75
+
+// class Solution {
+//     public int[] productExceptSelf(int[] nums) {
+//         int n = nums.length;
+//         int totalProduct = 1;
+//         int zeroCount = 0;
+        
+//         //calculate the total products of all elements and count zeros
+//         for(int i = 0; i < n; i++){
+//             if(nums[i] != 0){
+//                 totalProduct *= nums[i];
+//             }else{
+//                 zeroCount++;
+//             }
+//         }
+
+//         int[] result = new int[n];
+
+//         //if there is more than one zero all products except self will be zero
+//         if(zeroCount > 1){
+//             return result;
+//         }
+
+//         for(int i = 0; i < n; i++){
+//             if(zeroCount == 0){
+//                 result[i] = totalProduct/nums[i];
+//             }else{
+//                 // If there's exactly one zero, only the position with zero gets the total product
+//                 if(nums[i] == 0){
+//                     result[i] = totalProduct; // Only this index should have a non-zero value
+//                 }else{
+//                     result[i] = 0; //All other indices should be zero
+//                 }
+//             }
+//         }
+
+//         return result;
+//     }
+// }
+
+
+// Calculate Prefix Products: Traverse left to right, storing the product of all elements to the left of each index in answer.
+// Calculate Suffix Products: Traverse right to left, multiply answer[i] by the product of elements to the right (suffix),
+// and update suffix for next iteration.
+// Result: Each answer[i] ends up containing the product of all elements except nums[i] without using division.
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] answer = new int[n];
+
+        //step1: Calculate prefix products and store in answer
+        answer[0] = 1; //No elements to the left og the first element
+        for(int i = 1; i < n; i++){
+            answer[i] = answer[i-1] * nums[i-1];
+
+        }
+
+        //step 2: calculate suffix products and update answer
+        int suffix = 1; //No elements to the right of the last element
+        for(int i = n - 1; i >= 0; i--){
+            answer[i] = answer[i] * suffix; //multiply the prefix product by the suffix product
+            suffix = suffix *  nums[i]; //update suffix to include the current element for next iteration
+        }
+
+        return answer;
+    }
+}
+
+// Code Walkthrough and Detailed Dry Run:
+// Given: nums = [1, 2, 3, 4]
+
+// Step 1: Calculate Prefix Products and Store in answer
+// Initialize:
+// int[] answer = new int[n] → answer = [0, 0, 0, 0] initially (before setting the first element).
+// answer[0] = 1 (because there are no elements to the left of the first element).
+// Prefix Calculation Loop (for (int i = 1; i < n; i++)):
+// The loop runs from i = 1 to i = n - 1 (i.e., i = 3 in this case).
+
+// Iteration 1 (i = 1):
+// answer[1] = answer[0] * nums[0] → answer[1] = 1 * 1 = 1
+// Updated answer: [1, 1, 0, 0]
+
+// Iteration 2 (i = 2):
+// answer[2] = answer[1] * nums[1] → answer[2] = 1 * 2 = 2
+// Updated answer: [1, 1, 2, 0]
+
+// Iteration 3 (i = 3):
+// answer[3] = answer[2] * nums[2] → answer[3] = 2 * 3 = 6
+// Updated answer: [1, 1, 2, 6]
+
+// Step 2: Calculate Suffix Products and Update answer
+// Initialize:
+// int suffix = 1 (since there are no elements to the right of the last element).
+// Suffix Calculation Loop (for (int i = n - 1; i >= 0; i--)):
+// The loop runs from i = n - 1 (i.e., i = 3) to i = 0.
+
+// Iteration 1 (i = 3):
+// answer[3] *= suffix → answer[3] = 6 * 1 = 6
+// Updated answer: [1, 1, 2, 6]
+// Update suffix = suffix * nums[3] → suffix = 1 * 4 = 4
+
+// Iteration 2 (i = 2):
+// answer[2] *= suffix → answer[2] = 2 * 4 = 8
+// Updated answer: [1, 1, 8, 6]
+// Update suffix = suffix * nums[2] → suffix = 4 * 3 = 12
+
+// Iteration 3 (i = 1):
+// answer[1] *= suffix → answer[1] = 1 * 12 = 12
+// Updated answer: [1, 12, 8, 6]
+// Update suffix = suffix * nums[1] → suffix = 12 * 2 = 24
+
+// Iteration 4 (i = 0):
+// answer[0] *= suffix → answer[0] = 1 * 24 = 24
+// Updated answer: [24, 12, 8, 6]
+// Update suffix = suffix * nums[0] → suffix = 24 * 1 = 24 (this value won't be used further as the loop ends here).
+
+// Final Output
+// Return answer: [24, 12, 8, 6]
