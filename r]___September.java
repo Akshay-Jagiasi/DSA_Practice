@@ -42,6 +42,29 @@ class Solution {
     }
 }
 
+// Array:     [1, 3, 4, 2, 2]
+//             |  |  |  |  |
+// Indices:    0  1  2  3  4
+
+// Step 1: Start at index 0
+// slow -> 1, fast -> 1
+
+// Step 2: Move
+// slow -> 3 (1 step), fast -> 2 (2 steps)
+
+// Next move:
+// slow -> 2 (1 step), fast -> 2 (2 steps)
+// Both meet at value 2 (cycle detected).
+
+// Step 3: Reset slow to start:
+// slow -> 1 (reset), fast still at 2.
+
+// Step 4: Move to find duplicate:
+// slow -> 3, fast -> 4
+// slow -> 2, fast -> 2 (both meet at duplicate 2).
+
+// Step 5: Return 2 as the duplicate number.
+
 
 
 //___________________________________________________________________________________________________________________________
@@ -1013,8 +1036,15 @@ class Solution {
 }
 
 
+
 //___________________________________________________________________________________________________________________________
 Q14: https://leetcode.com/problems/search-a-2d-matrix/description/
+
+// The code first checks if the matrix is valid. It then uses binary search to narrow down the row range where the target could be found,
+// starting from all rows and repeatedly comparing the target to the first element of the middle row, adjusting the range accordingly until only two rows remain.
+// Next, it determines which of the two rows might contain the target based on its value relative to the first elements of these rows.
+// Once the correct row is identified, it performs a binary search within that row to locate the target value, and finally checks the last two elements for a match before returning the result.
+
 
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
@@ -1123,6 +1153,40 @@ class Solution {
         }
     }
 }
+
+/*
+--------------------------------------------------------
+                       DRY RUN
+--------------------------------------------------------
+Input: nums = [[1, 3, 5], 
+               [2, 8, 7], 
+               [4, 6, 9]]
+
+Step 1: Sorting each row in descending order:
+- Row 1: [1, 3, 5] → Sorted (ascending): [1, 3, 5] → Reversed: [5, 3, 1]
+- Row 2: [2, 8, 7] → Sorted (ascending): [2, 7, 8] → Reversed: [8, 7, 2]
+- Row 3: [4, 6, 9] → Sorted (ascending): [4, 6, 9] → Reversed: [9, 6, 4]
+- Resulting nums after sorting and reversing: 
+  [[5, 3, 1], 
+   [8, 7, 2], 
+   [9, 6, 4]]
+
+Step 2: Calculate the score by finding the max in each column:
+- Column 1 (i=0):
+  - maxInThisRound = max(5, 8, 9) = 9
+  - score = 0 + 9 = 9
+
+- Column 2 (i=1):
+  - maxInThisRound = max(3, 7, 6) = 7
+  - score = 9 + 7 = 16
+
+- Column 3 (i=2):
+  - maxInThisRound = max(1, 2, 4) = 4
+  - score = 16 + 4 = 20
+
+Final Score: 20
+Return value: 20
+*/
 
 
 
