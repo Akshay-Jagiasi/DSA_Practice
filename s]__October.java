@@ -1,4 +1,4 @@
-Q71: https://leetcode.com/problems/removing-stars-from-a-string/description/
+Q1: https://leetcode.com/problems/removing-stars-from-a-string/description/
 
 // class Solution {
 //     public String removeStars(String s) {
