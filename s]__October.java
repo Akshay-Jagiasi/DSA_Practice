@@ -271,3 +271,138 @@ class Solution {
 
 // After Second Reversal (Final Output):
 // 13 -> 8 -> null
+
+
+//___________________________________________________________________________________________________________________________
+Q3: https://leetcode.com/problems/container-with-most-water/description/
+
+class Solution {
+    public int maxArea(int[] height) {
+
+        int n = height.length;
+        int left = 0;
+        int right = n-1;
+        int maxArea = 0;
+
+        while(left < right){
+            // Calculate the area between the lines at 'left' and 'right'
+            int currentArea = Math.min(height[left], height[right]) * (right - left);
+           
+            maxArea = Math.max(maxArea, currentArea);
+            
+            if(height[left] < height[right]){
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return maxArea;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q4: https://leetcode.com/problems/max-number-of-k-sum-pairs/description/
+
+class Solution {
+    public int maxOperations(int[] nums, int k) {
+
+        Arrays.sort(nums);
+        int left = 0;
+        int right = nums.length - 1;
+        int pairs = 0;
+
+        while(left < right){
+            int currentSum = nums[left] + nums[right];
+            if(currentSum == k){
+                pairs++;
+                left++;
+                right--;
+            }else if(currentSum < k){
+                left++;
+            }else{
+               right--;
+            }
+        }
+
+        return pairs;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q5: https://leetcode.com/problems/string-compression/description/
+
+class Solution {
+    public int compress(char[] chars) {
+        int index = 0; //where compressed version will be written 
+        int i = 0; //Pointer to traverse the array 
+
+        while(i < chars.length){
+            char currentChar = chars[i];
+            int count = 0;
+
+            // Count how many times the current character repeats
+            while(i < chars.length && chars[i] == currentChar){
+                i++;
+                count++;
+            } 
+
+            // Write the character itself to the compressed array
+            chars[index++] = currentChar;
+
+            // If the character occurs more than once, write the count
+            if(count > 1){
+                // Convert the count to characters and append them
+                for(char c : String.valueOf(count).toCharArray()){
+                    chars[index++] = c;
+                }
+            }
+        }
+        return index; // This is the new length of the compressed array
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q6: https://leetcode.com/problems/increasing-triplet-subsequence/description/
+
+// Iteration: It then iterates through each number in the input array nums.
+// Update first: If the current number is less than first, it updates first to this current number.
+// Update second: If the current number is greater than first but less than second,
+// it updates second to this current number.
+// Found Triplet: If the current number is greater than both first and second,
+// it returns true, indicating that an increasing triplet has been found. If the loop ends without finding a triplet, it returns false.
+
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int first = Integer.MAX_VALUE;
+        int second = Integer.MAX_VALUE;
+
+        for(int num : nums){
+
+            if(num <= first){
+                first = num;
+            }else if(num <= second){
+                second = num;
+            }else{
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+/*
+Iteration    num          Action                                             Updated Values
+1            5            num < first is true, update first to 5          first = 5, second = Integer.MAX_VALUE
+2            1            num < first is true, update first to 1          first = 1, second = Integer.MAX_VALUE
+3            5            num < second is true, update second to 5        first = 1, second = 5
+4            5            Neither condition is true, continue             first = 1, second = 5
+5            2            num < second is true, update second to 2        first = 1, second = 2
+6            5            num > second, return true (found triplet)       Returns true
+*/
