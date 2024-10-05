@@ -406,3 +406,243 @@ Iteration    num          Action                                             Upd
 5            2            num < second is true, update second to 2        first = 1, second = 2
 6            5            num > second, return true (found triplet)       Returns true
 */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q7: https://leetcode.com/problems/asteroid-collision/description/
+
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        // Stack to keep track of surviving asteroids
+        Stack<Integer> stack = new Stack<>();
+
+        // Loop through each asteroid in the input array
+        for(int asteroid : asteroids){
+
+            // Boolean flag to track if the current asteroid collided
+            boolean collided = false;
+
+            // Check for potential collisions:
+            // - There is a potential for collision if the stack is not empty
+            // - The current asteroid is moving left (i.e., asteroid < 0)
+            // - The top of the stack asteroid is moving right (i.e., stack.peek() > 0)
+            while(!stack.isEmpty() && asteroid < 0 && stack.peek() > 0){
+
+                // Peek at the top asteroid from the stack (the right-moving asteroid)
+                int top = stack.peek();
+
+                // Case 1: The absolute size of the current left-moving asteroid is greater than the size of the right-moving asteroid at the top of the stack
+                if(Math.abs(asteroid) > top){
+                    // Current left-moving asteroid destroys the right-moving one (pop it from the stack)  
+                    stack.pop();
+                    // Note: We do not set `collided = true` because the current asteroid is still active and might continue to destroy more right-moving asteroids
+                
+                // Case 2: Both asteroids have the same size
+                }else if(Math.abs(asteroid) == top){
+                    // Both asteroids destroy each other
+                    stack.pop(); // Remove the top asteroid
+                    collided = true; // Set flag to true, as the current asteroid also gets destroyed
+                    break; // Exit the loop since the current asteroid no longer exists
+                
+                // Case 3: The top asteroid is larger than the current one
+                }else{
+                    // The right-moving asteroid survives, and the current asteroid is destroyed
+                    collided = true;  // Mark the current asteroid as destroyed
+                    break; // Exit the loop since no further checks are necessary
+                }
+            }
+            if(!collided){ // If no collision happened (either the stack is empty or all right-moving asteroids were destroyed), we push the current asteroid onto the stack
+                stack.push(asteroid); // Add the surviving asteroid (either right-moving or left-moving) to the stack
+            }
+        }
+
+        int[] result = new int[stack.size()];
+        // Pop elements from the stack (LIFO) and place them in the result array in reverse order (from last added to first added)
+        for(int i = result.length-1; i >= 0; i--){
+            result[i] = stack.pop();
+        }
+        
+        return result;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q8: https://leetcode.com/problems/min-stack/description/
+
+/*
+     * Summary of how minStack works:
+     *
+     * 1. The main stack holds all elements.
+     * 2. The minStack only holds the current minimums. It helps retrieve the minimum value in O(1) time.
+     * 3. Whenever a value is pushed onto the main stack, it is compared with the current minimum (top of minStack):
+     *    - If the value is less than or equal to the current minimum, it's pushed to the minStack as well.
+     *    - If the value is greater than the current minimum, it doesn't affect the minStack.
+     * 4. When popping an element, if the element being popped is equal to the top of the minStack (i.e., the current minimum),
+     *    we also pop from the minStack to update the minimum correctly.
+     *
+     * Why compare mainStack.top() with minStack.top()?
+     * - We compare the top of the main stack with the top of the minStack during a pop operation to check if we're
+     *   removing the current minimum from the main stack. If so, we also remove it from minStack to keep both stacks in sync.
+     * - The minStack only contains elements that are the current minimum at some point in time.
+     *
+     * Edge case: If we have multiple values of the same minimum (e.g., multiple -2's), both will be pushed to minStack.
+     * When popping, they will be removed one by one, keeping the minimum accurate.
+*/
+
+class MinStack {
+   
+    // Main stack to hold the values
+    private Stack<Integer> stack;
+    // Auxiliary stack to hold the minimum values
+    private Stack<Integer> minStack;
+
+
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
+    }
+    
+    public void push(int val) {
+        stack.push(val);
+        if(minStack.isEmpty() || val <= minStack.peek()){
+            minStack.push(val);
+        }
+    }
+    
+    public void pop() {
+        int topValue = stack.pop();
+        if(topValue == minStack.peek()){
+            minStack.pop();
+        }
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(val);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q9: https://leetcode.com/problems/design-a-stack-with-increment-operation/description/
+
+class CustomStack {
+
+    private int[] stack; // Main Stack
+    private int[] increment; //Array to store increments
+    private int size; //current size of the stack
+    private int maxSize; //maximum size of the stack
+
+    public CustomStack(int maxSize) {
+        this.maxSize = maxSize;
+        this.stack = new int[maxSize];
+        this.increment = new int[maxSize];
+        this.size = 0;
+    }
+    
+    public void push(int x) {
+        if(size < maxSize){
+            stack[size] = x;
+            size++;
+        }
+    }
+    
+    public int pop() {
+        if(size == 0){
+            return -1;
+        }
+        size--; // Decrease the size as popping
+
+        // Apply the increment at this level
+        int result = stack[size] + increment[size];
+
+        // If there's an increment, propagate it to the previous element
+        if(size > 0){
+            increment[size - 1] = increment[size - 1] + increment[size];
+        }
+
+
+        // Reset the increment for the current position since it's applied
+        increment[size] = 0;
+
+        return result;
+    }
+    
+    public void increment(int k, int val) {
+        int index = Math.min(k, size) - 1; // Increment up to min(k, size) elements
+        if(index >= 0){
+            increment[index] += val; // Add the increment to the k-th element (index k-1)
+        }
+    }
+}
+
+/**
+ * Your CustomStack object will be instantiated and called as such:
+ * CustomStack obj = new CustomStack(maxSize);
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * obj.increment(k,val);
+ */
+
+
+
+//___________________________________________________________________________________________________________________________
+Q10: https://leetcode.com/problems/add-two-numbers/description/
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode(0); // Dummy node to make handling the list easier
+        ListNode current = dummyHead; // Pointer to construct the result list
+        int carry = 0; // Carry for digits exceeding 9
+
+        while(l1 != null || l2 != null || carry != 0){ // Loop until both lists are done and no carry remains
+            int sum = carry; // Start with the carry from the previous step
+
+            // If l1 has a node, add its value to sum
+            if(l1 != null){
+                sum = sum + l1.val;
+                l1 = l1.next; // Move to the next node in l1
+            }
+            
+            // If l2 has a node, add its value to sum
+            if(l2 != null){
+                sum = sum + l2.val;
+                l2 = l2.next; // Move to the next node in l2
+            }
+
+            carry = sum / 10; // Calculate the carry (sum >= 10 means carry is 1)
+            int newVal = sum % 10; // The current digit for the result (0-9)
+
+            current.next = new ListNode(newVal); // Create a new node with the current digit
+            current = current.next; // Move to the next node in the result list
+        }
+
+        return dummyHead.next; // Return the result list starting from the node after dummy
+    }
+}
