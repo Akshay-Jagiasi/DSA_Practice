@@ -646,3 +646,102 @@ class Solution {
         return dummyHead.next; // Return the result list starting from the node after dummy
     }
 }
+
+
+//___________________________________________________________________________________________________________________________
+Q11: https://leetcode.com/problems/balanced-binary-tree/description/
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return checkHeight(root) != -1;
+    }
+
+    private int checkHeight(TreeNode node){
+        if(node == null){
+            return 0; // Base case: height of an empty subtree is 0
+        }
+
+        // Recursively get the height of the left subtree
+        int leftHeight = checkHeight(node.left);
+        if(leftHeight == -1) return -1;
+    
+        // Recursively get the height of the right subtree
+        int rightHeight = checkHeight(node.right);
+        if(rightHeight == -1) return -1;
+
+        // If the current node is unbalanced, return -1
+        if(Math.abs(leftHeight - rightHeight) > 1){
+            return -1;
+        }
+
+        // Otherwise, return the height of the current node
+        return 1 + Math.max(leftHeight, rightHeight);
+    }    
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q12: https://leetcode.com/problems/reverse-integer/description/
+
+// Extracting Digits: The number x is processed digit by digit using x % 10 to extract the last digit and x = x / 10 to remove it from x.
+// Overflow Check: Before multiplying result by 10, the code checks whether doing so will cause the value to exceed INT_MAX. If it does, return 0.
+// Underflow Check: Similarly, it checks if multiplying result by 10 will cause it to drop below INT_MIN. If it does, return 0.
+// Reversing: For each extracted digit, the code appends the digit to the reversed result by multiplying the current result by 10 and adding the digit.
+
+/*
+Explanation of overflow and underflow checks:
+
+Overflow Check:
+1. If result > INT_MAX / 10 (214748364), multiplying by 10 will overflow.
+2. If result == INT_MAX / 10 and the next digit > 7, adding it will overflow.
+   - Example: result = 214748364, next digit = 8 -> result * 10 + 8 = 2147483648 (overflow).
+
+Underflow Check:
+1. If result < INT_MIN / 10 (-214748364), multiplying by 10 will underflow.
+2. If result == INT_MIN / 10 and the next digit < -8, adding it will underflow.
+   - Example: result = -214748364, next digit = -9 -> result * 10 + (-9) = -2147483649 (underflow).
+*/
+
+
+class Solution {
+    public int reverse(int x) {
+        int INT_MIN = Integer.MIN_VALUE;
+        int INT_MAX = Integer.MAX_VALUE;
+
+        int result = 0;
+
+        while(x != 0){
+            int digit = x % 10; // extract the last digit
+            x = x / 10; // Remove the last digit
+
+            // Check for overflow before multiplying result by 10
+            if(result > INT_MAX / 10 || (result == INT_MAX / 10 && digit > 7)){
+                return 0;  // overflow case
+            }
+
+            if(result < INT_MIN / 10 || (result == INT_MIN / 10 && digit < -8)){
+                return 0;  // underflow case
+            }
+
+            result = result * 10 + digit;
+        }
+
+        return result;
+    }
+}
