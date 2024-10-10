@@ -745,3 +745,61 @@ class Solution {
         return result;
     }
 }
+
+
+
+//___________________________________________________________________________________________________________________________
+Q13: https://leetcode.com/problems/monotonic-array/description/
+
+class Solution {
+    public boolean isMonotonic(int[] nums) {
+        boolean isIncreasing = true;  // Flag to check for monotonic increasing
+        boolean isDecreasing = true;  // Flag to check for monotonic decreasing
+        
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] > nums[i + 1]) {
+                isIncreasing = false;  // If current element is greater than next, it's not increasing
+            }
+            if (nums[i] < nums[i + 1]) {
+                isDecreasing = false;  // If current element is less than next, it's not decreasing
+            }
+        }
+        
+        return isIncreasing || isDecreasing;
+    }
+}
+
+
+
+//___________________________________________________________________________________________________________________________
+Q14: https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/description/
+
+class Solution {
+    public int maxVowels(String s, int k) {
+        int maxVowels =  0;
+        int currentVowelCount = 0;
+
+        for(int i = 0; i < s.length(); i++){
+
+            // If the current character is a vowel, increment the current vowel count
+            if(isVowel(s.charAt(i))){
+                currentVowelCount++;
+            }
+
+            // Once we have processed 'k' characters, start sliding the window
+            // If the character that is leaving the window (i - k) is a vowel, 
+            // decrement the current vowel count
+            if(i >= k && isVowel(s.charAt(i-k))){
+                currentVowelCount--;
+            }
+
+            maxVowels = Math.max(maxVowels, currentVowelCount);
+        }
+
+        return maxVowels;
+    }
+
+    private boolean isVowel(char c){
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+    }
+}
